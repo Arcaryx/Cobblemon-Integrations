@@ -29,6 +29,7 @@ dependencies {
     modImplementation "com.cobblemon:forge:${cobblemon_file}"
     modImplementation "curse.maven:jade-forge-324717:${jade_forge_file}"
     modImplementation "curse.maven:jei-forge-238222:${jei_forge_file}"
+    modImplementation "curse.maven:tan-forge-246391:${tan_forge_file}"
 }
 
 def replaceProperties = [mod_id                 : mod_id,
