@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="MPL2.0"
+issueTrackerURL="https://Arcaryx/Cobblemon-Integrations/issues"
+[[mods]]
+modId="cobblemonintegrations"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+logoFile="icon.png"
+description='''${mod_description}'''
+[[dependencies.cobblemonintegrations]]
+   modId="forge"
+   mandatory=true
+   versionRange="${forge_version_range}"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies.cobblemonintegrations]]
+   modId="minecraft"
+   mandatory=true
+   versionRange="${minecraft_version_range}"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies.cobblemonintegrations]]
+   modId="cobblemon"
+   mandatory=true
+   versionRange="[1.4,)"
+   ordering="NONE"
+   side="BOTH"

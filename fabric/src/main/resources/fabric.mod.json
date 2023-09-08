@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": ["${mod_authors}"],
+  "contact": {},
+
+  "license": "MPL2.0",
+  "icon": "assets/${mod_id}/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "${mod_base_package}.fabric.CobblemonIntegrationsFabric"
+    ],
+    "jade": [
+      "${mod_base_package}.waila.jade.CobblemonJadePlugin"
+    ],
+    "jei_mod_plugin": [
+      "${mod_base_package}.jei.CobblemonJeiPlugin"
+    ]
+  },
+  "mixins": [
+    "cobblemonintegrations.mixins.json",
+    "cobblemonintegrations-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": ">=${minecraft_version}",
+    "java": ">=17",
+    "fabric-api": "*",
+    "cobblemon": ">=1.4"
+  }
+}
