@@ -27,7 +27,7 @@ abstract class MixinInteractWheelGuiFactory {
         CobblemonIntegrations.LOGGER.info("mixinCreatePokemonInteractGui");
         if (CobblemonIntegrations.CONFIG.isModLoaded("waystones") && CobblemonIntegrations.CONFIG.allowWaystoneTeleport()) {
             var teleport = new InteractWheelOption(
-                    new ResourceLocation(CobblemonIntegrations.MOD_ID, "textures/gui/interact/icon_teleport.png"),
+                    new ResourceLocation(CobblemonIntegrations.MOD_ID, "textures/gui/icon_teleport.png"),
                     () -> new Vector3f(1f, 1f, 1f),
                     () -> {
                         CobblemonIntegrations.NETWORK.sendToServer(new TeleportInteractMessage(pokemonID));
