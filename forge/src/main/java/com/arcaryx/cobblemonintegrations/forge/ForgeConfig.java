@@ -23,6 +23,11 @@ public class ForgeConfig implements IConfig {
     public ForgeConfigSpec.IntValue minLevelForDirty, minLevelForNormal, minLevelForPurified;
     public ForgeConfigSpec.DoubleValue temperatureRange, temperatureRangePerLevel, temperatureStrength, temperatureStrengthPerLevel;
 
+    // Waystones
+    private ForgeConfigSpec.BooleanValue allowWaystoneTeleport, requireTeleportMove;
+    private ForgeConfigSpec.IntValue waystoneMinTeleportLevel;
+
+
     public ForgeConfig(ForgeConfigSpec.Builder builder) {
         if (ModList.get().isLoaded("jade")) {
             builder.push("waila");
@@ -98,6 +103,25 @@ public class ForgeConfig implements IConfig {
                     .defineInRange("minLevelForPurified", 50, 0, 255);
             builder.pop().pop().pop();
         }
+        if (ModList.get().isLoaded("waystones")) {
+            builder.push("waystones");
+            allowWaystoneTeleport = builder
+                    .comment("Allow Pokemon to be used for Waystone teleportation.")
+                    .define("allowWaystoneTeleport", true);
+            requireTeleportMove = builder
+                    .comment("Does the Pokemon need to have Teleport accessible. If false, any psychic type can teleport.")
+                    .define("requireTeleportMove", true);
+            waystoneMinTeleportLevel = builder
+                    .comment("Minimum level to Teleport.")
+                    .defineInRange("waystoneMinTeleportLevel", 0, 0, 255);
+            builder.pop();
+        }
+
+    }
+
+    @Override
+    public boolean isModLoaded(String modId) {
+        return ModList.get().isLoaded(modId);
     }
 
     @Override
@@ -117,5 +141,20 @@ public class ForgeConfig implements IConfig {
             }).toList();
         }
         return TooltipType.pokemonDefaults;
+    }
+
+    @Override
+    public boolean allowWaystoneTeleport() {
+        return allowWaystoneTeleport.get();
+    }
+
+    @Override
+    public int waystoneMinTeleportLevel() {
+        return waystoneMinTeleportLevel.get();
+    }
+
+    @Override
+    public boolean requireTeleportMove() {
+        return requireTeleportMove.get();
     }
 }

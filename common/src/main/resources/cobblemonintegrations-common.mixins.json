@@ -4,12 +4,10 @@
   "package": "com.arcaryx.cobblemonintegrations.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "cobblemon.MixinInteractWheelGuiFactory",
     "minecraft.MixinPlayerList"
   ],
   "client": [
     "cobblemon.MixinPokemonRenderer"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+  ]
 }

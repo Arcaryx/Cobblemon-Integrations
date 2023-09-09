@@ -30,6 +30,8 @@ dependencies {
     modImplementation "com.cobblemon:fabric:${cobblemon_file}"
     modImplementation "curse.maven:jade-fabric-324717:${jade_fabric_file}"
     modImplementation "curse.maven:jei-fabric-238222:${jei_fabric_file}"
+    modImplementation "curse.maven:waystones-fabric-500087:${waystones_fabric_file}"
+    modImplementation "curse.maven:balm-fabric-500525:${balm_fabric_file}"
 }
 
 

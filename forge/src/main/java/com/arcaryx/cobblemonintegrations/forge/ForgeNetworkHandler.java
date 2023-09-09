@@ -32,8 +32,18 @@ public class ForgeNetworkHandler extends AbstractNetworkHandler {
     }
 
     @Override
+    public <T extends AbstractMessage> void registerMessageServer(Class<T> type, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder) {
+        registerMessageClient(type, encoder, decoder);
+    }
+
+    @Override
     public void sendToPlayer(ServerPlayer player, AbstractMessage message) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
+    }
+
+    @Override
+    public void sendToServer(AbstractMessage message) {
+        INSTANCE.sendToServer(message);
     }
 
 }

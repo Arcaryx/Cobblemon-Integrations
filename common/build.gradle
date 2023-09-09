@@ -9,6 +9,8 @@ dependencies {
     modImplementation "curse.maven:jade-common-324717:${jade_forge_file}"
     modImplementation "curse.maven:kotlin-common-351264:${kotlin_forge_file}"
     modImplementation "curse.maven:jei-common-238222:${jei_forge_file}"
+    modImplementation "curse.maven:waystones-common-245755:${waystones_forge_file}"
+    modImplementation "curse.maven:balm-common-531761:${balm_forge_file}"
 }
 
 architectury {

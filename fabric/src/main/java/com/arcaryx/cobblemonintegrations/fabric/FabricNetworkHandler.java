@@ -24,10 +24,27 @@ public class FabricNetworkHandler extends AbstractNetworkHandler {
     }
 
     @Override
+    public <T extends AbstractMessage> void registerMessageServer(Class<T> type, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder) {
+        var location = new ResourceLocation(CobblemonIntegrations.MOD_ID, type.getSimpleName().toLowerCase());
+        ServerPlayNetworking.registerGlobalReceiver(location, (server, player, handler, buf, responseSender) -> {
+            AbstractMessage message = decoder.apply(buf);
+            server.execute(() -> message.handle(player));
+        });
+    }
+
+    @Override
     public void sendToPlayer(ServerPlayer player, AbstractMessage message) {
         var buf = new FriendlyByteBuf(Unpooled.buffer());
         message.encode(buf);
         var location = new ResourceLocation(CobblemonIntegrations.MOD_ID, message.getClass().getSimpleName().toLowerCase());
         ServerPlayNetworking.send(player, location, buf);
+    }
+    
+    @Override
+    public void sendToServer(AbstractMessage message) {
+        var buf = new FriendlyByteBuf(Unpooled.buffer());
+        message.encode(buf);
+        var location = new ResourceLocation(CobblemonIntegrations.MOD_ID, message.getClass().getSimpleName().toLowerCase());
+        ClientPlayNetworking.send(location, buf);
     }
 }

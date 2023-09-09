@@ -3,8 +3,8 @@ package com.arcaryx.cobblemonintegrations.net.messages;
 import com.arcaryx.cobblemonintegrations.data.ClientCache;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import com.arcaryx.cobblemonintegrations.data.PokemonDrop;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class SyncDropsMessage extends AbstractMessage {
         }
     }
 
-    public void handle(ServerPlayer player) {
+    public void handle(Player player) {
         ClientCache.setPokemonDrops(drops);
     }
 }

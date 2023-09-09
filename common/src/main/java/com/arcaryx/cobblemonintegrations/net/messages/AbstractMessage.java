@@ -1,7 +1,7 @@
 package com.arcaryx.cobblemonintegrations.net.messages;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public abstract class AbstractMessage {
     public AbstractMessage(){}
@@ -12,5 +12,5 @@ public abstract class AbstractMessage {
     // Encoder
     public abstract void encode(FriendlyByteBuf buf);
 
-    public abstract void handle(ServerPlayer player);
+    public abstract void handle(Player player);
 }
