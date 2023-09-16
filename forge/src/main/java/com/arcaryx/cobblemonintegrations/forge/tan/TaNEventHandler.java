@@ -13,7 +13,9 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import toughasnails.api.item.TANItems;
 import toughasnails.api.thirst.WaterType;
 import toughasnails.item.EmptyCanteenItem;
@@ -83,5 +85,10 @@ public class TaNEventHandler {
         player.awardStat(Stats.ITEM_USED.get(itemstack.getItem()));
         event.setCanceled(true);
         event.setCancellationResult(InteractionResultHolder.sidedSuccess(replacementStack, event.getSide().isClient()).getResult());
+    }
+
+    @SubscribeEvent
+    public static void onServerStarting(ServerStartingEvent event) {
+            PokemonTemperatureModifier.registerModifier();
     }
 }

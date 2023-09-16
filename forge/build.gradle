@@ -39,6 +39,8 @@ dependencies {
     modImplementation "curse.maven:tan-forge-246391:${tan_forge_file}"
     modImplementation "curse.maven:waystones-forge-245755:${waystones_forge_file}"
     modImplementation "curse.maven:balm-forge-531761:${balm_forge_file}"
+    modImplementation "curse.maven:enhanced_celestials-forge-438447:${enhanced_celestials_forge_file}"
+    modImplementation "curse.maven:corgilib-forge-693313:${corgilib_forge_file}"
 }
 
 def replaceProperties = [mod_id                 : mod_id,

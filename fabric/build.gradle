@@ -32,6 +32,8 @@ dependencies {
     modImplementation "curse.maven:jei-fabric-238222:${jei_fabric_file}"
     modImplementation "curse.maven:waystones-fabric-500087:${waystones_fabric_file}"
     modImplementation "curse.maven:balm-fabric-500525:${balm_fabric_file}"
+    modImplementation "curse.maven:enhanced_celestials-fabric-443694:${enhanced_celestials_fabric_file}"
+    modImplementation "curse.maven:corgilib-fabric-693313:${corgilib_fabric_file}"
 }
 
 
@@ -78,4 +80,8 @@ components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
     }
+}
+
+loom {
+    accessWidenerPath = project(":common").file("src/main/resources/cobblemonintegrations.aw")
 }

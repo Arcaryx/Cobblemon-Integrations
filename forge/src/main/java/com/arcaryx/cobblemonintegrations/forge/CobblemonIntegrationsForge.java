@@ -1,16 +1,16 @@
 package com.arcaryx.cobblemonintegrations.forge;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
-import com.arcaryx.cobblemonintegrations.forge.tan.PokemonTemperatureModifier;
+import com.arcaryx.cobblemonintegrations.forge.enhancedcelestials.ECEventHandler;
 import com.arcaryx.cobblemonintegrations.forge.tan.TaNEventHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod(CobblemonIntegrations.MOD_ID)
@@ -30,17 +30,12 @@ public class CobblemonIntegrationsForge {
         CobblemonIntegrations.CONFIG = CONFIG;
         CobblemonIntegrations.NETWORK = new ForgeNetworkHandler();
         CobblemonIntegrations.init();
-        MinecraftForge.EVENT_BUS.register(this);
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         if (ModList.get().isLoaded("toughasnails")) {
             MinecraftForge.EVENT_BUS.register(TaNEventHandler.class);
         }
-
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        if(ModList.get().isLoaded("toughasnails")) {
-            PokemonTemperatureModifier.registerModifier();
+        if (ModList.get().isLoaded("enhancedcelestials")) {
+            modBus.register(ECEventHandler.class);
         }
     }
 }
