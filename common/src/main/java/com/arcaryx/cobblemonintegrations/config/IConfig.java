@@ -12,4 +12,5 @@ public interface IConfig {
     boolean allowWaystoneTeleport();
     int waystoneMinTeleportLevel();
     boolean requireTeleportMove();
+    boolean applyInPVP();
 }

@@ -27,6 +27,9 @@ public class ForgeConfig implements IConfig {
     private ForgeConfigSpec.BooleanValue allowWaystoneTeleport, requireTeleportMove;
     private ForgeConfigSpec.IntValue waystoneMinTeleportLevel;
 
+    // Enhanced Celestials
+    private ForgeConfigSpec.BooleanValue applyInPVP;
+
 
     public ForgeConfig(ForgeConfigSpec.Builder builder) {
         if (ModList.get().isLoaded("jade")) {
@@ -116,7 +119,14 @@ public class ForgeConfig implements IConfig {
                     .defineInRange("waystoneMinTeleportLevel", 0, 0, 255);
             builder.pop();
         }
-
+        if (ModList.get().isLoaded("enhancedcelestials")) {
+            builder.push("enhancedcelestials");
+            builder.comment("Use datapacks for LunarEvent configuration.");
+            applyInPVP = builder
+                    .comment("Apply EXP/EV changes only in wild battles?")
+                    .define("applyInPVP", false);
+            builder.pop();
+        }
     }
 
     @Override
@@ -156,5 +166,10 @@ public class ForgeConfig implements IConfig {
     @Override
     public boolean requireTeleportMove() {
         return requireTeleportMove.get();
+    }
+
+    @Override
+    public boolean applyInPVP() {
+        return applyInPVP.get();
     }
 }

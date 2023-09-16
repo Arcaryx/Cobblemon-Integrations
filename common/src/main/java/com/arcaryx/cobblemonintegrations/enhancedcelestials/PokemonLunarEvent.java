@@ -1,17 +1,12 @@
 package com.arcaryx.cobblemonintegrations.enhancedcelestials;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
-import com.cobblemon.mod.common.api.Priority;
-import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.enhancedcelestials.EnhancedCelestials;
-import kotlin.Unit;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 
 public class PokemonLunarEvent {
 
@@ -21,18 +16,20 @@ public class PokemonLunarEvent {
             ResourceLocation.CODEC.fieldOf("lunar_event").forGetter(PokemonLunarEvent::getLunarEvent),
             Codec.FLOAT.fieldOf("shiny_multiplier").forGetter(PokemonLunarEvent::getShinyMultiplier),
             Codec.INT.fieldOf("min_perf_ivs").forGetter(PokemonLunarEvent::getPerfIVs),
+            Codec.FLOAT.fieldOf("exp_multiplier").forGetter(PokemonLunarEvent::getExpMultiplier),
             Codec.FLOAT.fieldOf("ev_multiplier").forGetter(PokemonLunarEvent::getEVMultiplier),
             Codec.FLOAT.fieldOf("aggression_multiplier").forGetter(PokemonLunarEvent::getAggressionMultiplier)
     ).apply(instance, PokemonLunarEvent::new));
 
     private final ResourceLocation lunarEvent;
-    private final float shinyMultiplier, evMultiplier, aggressionMultiplier;
+    private final float shinyMultiplier, expMultiplier, evMultiplier, aggressionMultiplier;
     private final int perfIVs;
 
-    public PokemonLunarEvent(ResourceLocation lunarEvent, float shinyMultiplier, int perfIvs, float evMultiplier, float aggressionMultiplier) {
+    public PokemonLunarEvent(ResourceLocation lunarEvent, float shinyMultiplier, int perfIvs, float expMultiplier, float evMultiplier, float aggressionMultiplier) {
         this.lunarEvent = lunarEvent;
         this.shinyMultiplier = shinyMultiplier;
         this.perfIVs = perfIvs;
+        this.expMultiplier = expMultiplier;
         this.evMultiplier = evMultiplier;
         this.aggressionMultiplier = aggressionMultiplier;
     }
@@ -47,6 +44,10 @@ public class PokemonLunarEvent {
 
     public int getPerfIVs() {
         return perfIVs;
+    }
+
+    public float getExpMultiplier() {
+        return expMultiplier;
     }
 
     public float getEVMultiplier() {

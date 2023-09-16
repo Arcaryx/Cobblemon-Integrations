@@ -1,0 +1,8 @@
+{
+  "lunar_event": "enhancedcelestials:blood_moon",
+  "shiny_multiplier": 1.0,
+  "exp_multiplier": 200.0,
+  "ev_multiplier": 2.0,
+  "aggression_multiplier": 4.0,
+  "min_perf_ivs": 0
+}

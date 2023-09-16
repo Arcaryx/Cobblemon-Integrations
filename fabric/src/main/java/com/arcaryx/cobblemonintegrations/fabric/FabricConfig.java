@@ -34,6 +34,10 @@ public class FabricConfig implements IConfig {
     private boolean allowWaystoneTeleport = true, requireTeleportMove = true;
     private int waystoneMinTeleportLevel = 0;
 
+    // Enhanced Celestials
+    private boolean applyInPVP = false;
+
+
     public static FabricConfig load() {
         var config = new FabricConfig();
         if (!Files.exists(CONFIG_PATH)) {
@@ -52,6 +56,7 @@ public class FabricConfig implements IConfig {
             this.allowWaystoneTeleport = config.allowWaystoneTeleport;
             this.requireTeleportMove = config.requireTeleportMove;
             this.waystoneMinTeleportLevel = config.waystoneMinTeleportLevel;
+            this.applyInPVP = config.applyInPVP;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,5 +98,10 @@ public class FabricConfig implements IConfig {
     @Override
     public boolean requireTeleportMove() {
         return requireTeleportMove;
+    }
+
+    @Override
+    public boolean applyInPVP() {
+        return applyInPVP;
     }
 }
