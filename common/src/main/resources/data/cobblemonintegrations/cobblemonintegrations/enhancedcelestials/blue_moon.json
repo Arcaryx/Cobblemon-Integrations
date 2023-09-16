@@ -3,6 +3,5 @@
   "shiny_multiplier": 64.0,
   "exp_multiplier": 1.0,
   "ev_multiplier": 1.0,
-  "aggression_multiplier": 1.0,
-  "min_perf_ivs": 2
+  "min_perf_ivs": 1
 }
