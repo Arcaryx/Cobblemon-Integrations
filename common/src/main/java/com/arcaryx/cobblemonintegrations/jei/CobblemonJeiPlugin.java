@@ -36,10 +36,10 @@ public class CobblemonJeiPlugin implements IModPlugin {
         // Pokemon Drops
         List<DropsWrapper> drops = new ArrayList<>();
         for (var species : PokemonSpecies.INSTANCE.getSpecies()) {
-            var baseTexture = PokemonModelRepository.INSTANCE.getTexture(species.getResourceIdentifier(), Set.copyOf(species.getStandardForm().getAspects()), null);
+            var baseTexture = PokemonModelRepository.INSTANCE.getTexture(species.getResourceIdentifier(), Set.copyOf(species.getStandardForm().getAspects()), 0);
             var forms = species.getForms().isEmpty() ? List.of(species.getStandardForm()) : species.getForms();
             for (var form : forms) {
-                var formTexture = PokemonModelRepository.INSTANCE.getTexture(species.getResourceIdentifier(), Set.copyOf(form.getAspects()), null);
+                var formTexture = PokemonModelRepository.INSTANCE.getTexture(species.getResourceIdentifier(), Set.copyOf(form.getAspects()), 0);
                 var isBaseForm = form.getName().equals(species.getStandardForm().getName());
                 var hasNewTexture = baseTexture != formTexture;
                 var hasNewDrops = !ClientCache.sameDrops(species, form, species, species.getStandardForm());
