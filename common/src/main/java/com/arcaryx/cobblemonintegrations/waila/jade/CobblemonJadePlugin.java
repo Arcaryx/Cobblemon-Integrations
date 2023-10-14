@@ -2,6 +2,7 @@ package com.arcaryx.cobblemonintegrations.waila.jade;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.cobblemon.mod.common.block.ApricornBlock;
+import com.cobblemon.mod.common.block.BerryBlock;
 import com.cobblemon.mod.common.block.HealingMachineBlock;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,7 @@ public class CobblemonJadePlugin implements IWailaPlugin {
     public static final ResourceLocation POKEMON_ENTITY = new ResourceLocation(CobblemonIntegrations.MOD_ID, "pokemon_entity");
     public static final ResourceLocation HEALER = new ResourceLocation(CobblemonIntegrations.MOD_ID, "healer");
     public static final ResourceLocation APRICORN = new ResourceLocation(CobblemonIntegrations.MOD_ID, "apricorn");
+    public static final ResourceLocation BERRY_BUSH = new ResourceLocation(CobblemonIntegrations.MOD_ID, "berry_bush");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
@@ -26,5 +28,6 @@ public class CobblemonJadePlugin implements IWailaPlugin {
         registration.registerEntityComponent(PokemonProvider.INSTANCE, PokemonEntity.class);
         registration.registerBlockComponent(HealerProvider.INSTANCE,  HealingMachineBlock.class);
         registration.registerBlockComponent(ApricornProvider.INSTANCE,  ApricornBlock.class);
+        registration.registerBlockComponent(BerryProvider.INSTANCE, BerryBlock.class);
     }
 }
