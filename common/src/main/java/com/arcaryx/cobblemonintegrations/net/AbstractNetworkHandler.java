@@ -11,12 +11,15 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class AbstractNetworkHandler {
-    public void registerMessages() {
+    public void registerMessagesClient() {
         registerMessageClient(SyncDropsMessage.class, SyncDropsMessage::encode, SyncDropsMessage::new);
+    }
+    public void registerMessagesServer() {
         if (CobblemonIntegrations.CONFIG.isModLoaded("waystones")) {
             registerMessageServer(TeleportInteractMessage.class, TeleportInteractMessage::encode, TeleportInteractMessage::new);
         }
     }
+
     public abstract <T extends AbstractMessage> void registerMessageClient(Class<T> type, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder);
     public abstract <T extends AbstractMessage> void registerMessageServer(Class<T> type, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder);
     public abstract void sendToPlayer(ServerPlayer player, AbstractMessage message);

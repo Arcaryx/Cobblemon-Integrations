@@ -13,6 +13,6 @@ public class CobblemonIntegrations
 	public static AbstractNetworkHandler NETWORK;
 
 	public static void init() {
-		NETWORK.registerMessages();
+		NETWORK.registerMessagesServer();
 	}
 }

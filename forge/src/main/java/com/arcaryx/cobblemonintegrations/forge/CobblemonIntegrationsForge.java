@@ -30,6 +30,7 @@ public class CobblemonIntegrationsForge {
         CobblemonIntegrations.CONFIG = CONFIG;
         CobblemonIntegrations.NETWORK = new ForgeNetworkHandler();
         CobblemonIntegrations.init();
+        CobblemonIntegrations.NETWORK.registerMessagesClient();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         if (ModList.get().isLoaded("toughasnails")) {
             MinecraftForge.EVENT_BUS.register(TaNEventHandler.class);
