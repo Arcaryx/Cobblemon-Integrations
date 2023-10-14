@@ -2,6 +2,8 @@ package com.arcaryx.cobblemonintegrations.mixin.cobblemon;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.net.messages.TeleportInteractMessage;
+import com.cobblemon.mod.common.api.types.ElementalTypes;
+import com.cobblemon.mod.common.client.CobblemonClient;
 import com.cobblemon.mod.common.client.gui.interact.wheel.InteractWheelGUI;
 import com.cobblemon.mod.common.client.gui.interact.wheel.InteractWheelGuiFactoryKt;
 import com.cobblemon.mod.common.client.gui.interact.wheel.InteractWheelOption;
@@ -17,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Mixin(value = InteractWheelGuiFactoryKt.class)
@@ -24,17 +27,29 @@ abstract class MixinInteractWheelGuiFactory {
     @Inject(method = "createPokemonInteractGui", require = 1,
             at = @At(value = "NEW", target = "(Ljava/util/Map;Lnet/minecraft/network/chat/Component;)Lcom/cobblemon/mod/common/client/gui/interact/wheel/InteractWheelGUI;"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void mixinCreatePokemonInteractGui(UUID pokemonID, boolean canMountShoulder, CallbackInfoReturnable<InteractWheelGUI> cir, InteractWheelOption mountShoulder, InteractWheelOption giveItem, Map<Orientation, InteractWheelOption> options, Pair[] arrayOfPair) {
-        CobblemonIntegrations.LOGGER.info("mixinCreatePokemonInteractGui");
         if (CobblemonIntegrations.CONFIG.isModLoaded("waystones") && CobblemonIntegrations.CONFIG.allowWaystoneTeleport()) {
-            var teleport = new InteractWheelOption(
-                    new ResourceLocation(CobblemonIntegrations.MOD_ID, "textures/gui/icon_teleport.png"),
-                    () -> new Vector3f(1f, 1f, 1f),
-                    () -> {
-                        CobblemonIntegrations.NETWORK.sendToServer(new TeleportInteractMessage(pokemonID));
-                        return Unit.INSTANCE;
+
+            var pokemonOpt = CobblemonClient.INSTANCE.getStorage().getMyParty().getSlots().stream()
+                    .filter((x) -> x.getEntity() != null && x.getEntity().getUUID().equals(pokemonID)).findFirst();
+            if (pokemonOpt.isPresent()) {
+                var pokemon = pokemonOpt.get();
+                var hasTeleportAccessible = pokemon.getAllAccessibleMoves().stream().anyMatch((x) -> x.getName().equals("teleport"));
+                var isPsychicType = Objects.equals(pokemon.getForm().getPrimaryType(), ElementalTypes.INSTANCE.getPSYCHIC()) ||
+                        Objects.equals(pokemon.getForm().getSecondaryType(), ElementalTypes.INSTANCE.getPSYCHIC());
+                if (pokemon.getLevel() >= CobblemonIntegrations.CONFIG.waystoneMinTeleportLevel()) {
+                    if (!(!hasTeleportAccessible && (CobblemonIntegrations.CONFIG.requireTeleportMove() || !isPsychicType))) {
+                        var teleport = new InteractWheelOption(
+                                new ResourceLocation(CobblemonIntegrations.MOD_ID, "textures/gui/icon_teleport.png"),
+                                () -> new Vector3f(1f, 1f, 1f),
+                                () -> {
+                                    CobblemonIntegrations.NETWORK.sendToServer(new TeleportInteractMessage(pokemonID));
+                                    return Unit.INSTANCE;
+                                }
+                        );
+                        options.put(Orientation.BOTTOM_LEFT, teleport);
                     }
-            );
-            options.put(Orientation.BOTTOM_LEFT, teleport);
+                }
+            }
         }
     }
 }
