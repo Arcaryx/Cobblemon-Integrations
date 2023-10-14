@@ -2,11 +2,10 @@ package com.arcaryx.cobblemonintegrations.waila.jade;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.config.ShowType;
+import com.arcaryx.cobblemonintegrations.util.ClientUtils;
 import com.arcaryx.cobblemonintegrations.util.PokemonUtils;
 import com.arcaryx.cobblemonintegrations.util.TextUtils;
 import com.arcaryx.cobblemonintegrations.waila.TooltipType;
-import com.cobblemon.mod.common.client.keybind.CurrentKeyAccessorKt;
-import com.cobblemon.mod.common.client.keybind.keybinds.PartySendBinding;
 import com.cobblemon.mod.common.client.settings.ServerSettings;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Gender;
@@ -251,9 +250,7 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
             }
             case BATTLE_HINT -> {
                 if (!pokemonEntity.isOwnedBy(accessor.getPlayer())) {
-                    var component = Component.literal("<press ");
-                    Component sendOutBinding = CurrentKeyAccessorKt.boundKey(PartySendBinding.INSTANCE).getDisplayName();
-                    component.append(sendOutBinding).append(" to battle>");
+                    var component = ClientUtils.CreateBattleHint();
                     tooltip.add(component.withStyle(ChatFormatting.DARK_GRAY));
                 }
             }
