@@ -1,19 +1,15 @@
 package com.arcaryx.cobblemonintegrations.enhancedcelestials;
 
-import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
-import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.IVs;
 import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
-import corgitaco.enhancedcelestials.api.EnhancedCelestialsRegistry;
 import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import kotlin.math.MathKt;
 import kotlin.random.Random;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 import java.util.Map;
@@ -44,8 +40,7 @@ public class ECHandler {
         }
     }
 
-    public static int ECModifyBattleExp(PokemonEntity pokemonEntity, int baseExp) {
-        Level level = ((Entity)pokemonEntity).level(); // Idk why this cast is necessary
+    public static int ECModifyBattleExp(int baseExp, Level level) {
         EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)level).getLunarContext();
         if (enhancedCelestialsContext != null) {
             var registry = level.registryAccess().registryOrThrow(PokemonLunarEvent.KEY);
@@ -59,8 +54,7 @@ public class ECHandler {
         return baseExp;
     }
 
-    public static void ECModifyBattleEVs(PokemonEntity pokemonEntity, Map<Stat, Integer> baseChanges) {
-        Level level = ((Entity)pokemonEntity).level(); // Idk why this cast is necessary
+    public static void ECModifyBattleEVs(Map<Stat, Integer> baseChanges, Level level) {
         EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)level).getLunarContext();
         if (enhancedCelestialsContext != null) {
             var registry = level.registryAccess().registryOrThrow(PokemonLunarEvent.KEY);
