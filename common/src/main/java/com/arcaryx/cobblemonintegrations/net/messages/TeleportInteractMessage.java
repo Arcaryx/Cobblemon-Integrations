@@ -1,6 +1,7 @@
 package com.arcaryx.cobblemonintegrations.net.messages;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
+import com.arcaryx.cobblemonintegrations.waystones.WaystonesUtils;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.blay09.mods.balm.api.Balm;
@@ -51,17 +52,9 @@ public class TeleportInteractMessage extends AbstractMessage {
             return;
         }
         var pokemon = pokemonEntity.getPokemon();
-        var hasTeleportAccessible = pokemon.getAllAccessibleMoves().stream().anyMatch((x) -> x.getName().equals("teleport"));
-        var isPsychicType = Objects.equals(pokemon.getForm().getPrimaryType(), ElementalTypes.INSTANCE.getPSYCHIC()) ||
-                Objects.equals(pokemon.getForm().getSecondaryType(), ElementalTypes.INSTANCE.getPSYCHIC());
-
-        if (pokemon.getLevel() < CobblemonIntegrations.CONFIG.waystoneMinTeleportLevel()) {
+        if (!WaystonesUtils.CanUseTeleport(pokemon)) {
             return;
         }
-        if (!hasTeleportAccessible && (CobblemonIntegrations.CONFIG.requireTeleportMove() || !isPsychicType)) {
-            return;
-        }
-
         Balm.getNetworking().openGui(player, containerProvider);
     }
 
