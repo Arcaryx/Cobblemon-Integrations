@@ -27,7 +27,7 @@ public class FabricConfig implements IConfig {
     private static final Path CONFIG_PATH = Paths.get("config", CobblemonIntegrations.MOD_ID + ".json");
 
     // WAILA
-    private boolean hidePokemonLabel = true;
+    private boolean hidePokemonLabel = false;
     private List<Pair<TooltipType, ShowType>> pokemonTooltips = TooltipType.pokemonDefaults;
 
     // Waystones

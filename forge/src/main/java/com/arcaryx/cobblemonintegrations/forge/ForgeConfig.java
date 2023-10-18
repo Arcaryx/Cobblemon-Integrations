@@ -41,7 +41,7 @@ public class ForgeConfig implements IConfig {
             builder.pop().push("misc");
             hidePokemonLabel = builder
                     .comment("Hide the Pokemon label/nametag completely.")
-                    .define("hidePokemonLabel", true);
+                    .define("hidePokemonLabel", false);
             builder.pop().pop();
         }
         if (ModList.get().isLoaded("toughasnails")) {
