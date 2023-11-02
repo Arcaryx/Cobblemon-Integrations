@@ -1,21 +1,18 @@
-package com.arcaryx.cobblemonintegrations.jei.drops;
+package com.arcaryx.cobblemonintegrations.jei.evoitems;
 
-import com.arcaryx.cobblemonintegrations.data.ClientCache;
-import com.arcaryx.cobblemonintegrations.data.PokemonDrop;
 import com.cobblemon.mod.common.client.gui.PokemonGuiUtilsKt;
 import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonFloatingState;
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.util.math.QuaternionUtilsKt;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
-import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -23,19 +20,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
-    private final Species species;
-    private final FormData form;
+public class EvoItemsWrapper implements IRecipeCategoryExtension {
+
+    private final Species speciesBase;
+    private final FormData formBase;
+    private final Species speciesEvo;
+    private final FormData formEvo;
+    private final List<Item> validItems;
+
     private PokemonFloatingState state;
     private long last;
 
-    public DropsWrapper(Species species, FormData form) {
-        this.species = species;
-        this.form = form;
+    public EvoItemsWrapper(Species speciesBase, FormData formBase, Species speciesEvo, FormData formEvo, List<Item> validItems) {
+        this.speciesBase = speciesBase;
+        this.formBase = formBase;
+        this.speciesEvo = speciesEvo;
+        this.formEvo = formEvo;
+        this.validItems = validItems;
     }
 
-    public List<PokemonDrop> getDrops() {
-        return ClientCache.getPokemonDrops(species, form);
+    public List<Item> getValidItems() {
+        return validItems;
     }
 
     @Override
@@ -51,31 +56,29 @@ public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
         var pose = graphics.pose();
 
         pose.pushPose();
-        var component = species.getTranslatedName();
-        if (species.getStandardForm() != form) {
-            component.append(Component.literal(String.format(" (%s)", form.getName())));
+        var component = speciesBase.getTranslatedName();
+        if (speciesBase.getStandardForm() != formBase && !formBase.getName().equalsIgnoreCase("base")) {
+            component.append(Component.literal(String.format(" (%s)", formBase.getName())));
         }
         graphics.drawString(Minecraft.getInstance().font, component, 2, 1, Objects.requireNonNull(ChatFormatting.WHITE.getColor()));
         pose.popPose();
 
-
-
-        var pokemon = new RenderablePokemon(species, new HashSet<>(form.getAspects()));
+        var pokemonBase = new RenderablePokemon(speciesBase, new HashSet<>(formEvo.getAspects()));
+        var pokemonEvo = new RenderablePokemon(speciesEvo, new HashSet<>(formEvo.getAspects()));
 
         var m1 = pose.last().pose();
         var l1 = m1.m30();
         var t1 = m1.m31();
-
-        pose.pushPose();
-
-        graphics.enableScissor((int)l1 + 2, (int)t1 + 13, (int)l1 + 61, (int)t1 + 92);
-
         var rotationY = -30F;
+
+        // Pokemon Base
+        pose.pushPose();
+        graphics.enableScissor((int)l1 + 2, (int)t1 + 13, (int)l1 + 61, (int)t1 + 92);
         pose.translate(31, 13, 0);
         pose.scale(1F, 1F, 1F);
         pose.pushPose();
         PokemonGuiUtilsKt.drawProfilePokemon(
-                pokemon,
+                pokemonBase,
                 pose,
                 QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, rotationY, 0F)),
                 state,
@@ -84,21 +87,24 @@ public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
         );
         pose.popPose();
         graphics.disableScissor();
-
         pose.popPose();
-    }
 
-
-    @Override
-    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
-        var drop = getDrops().get(Integer.parseInt(recipeSlotView.getSlotName().orElse("0")));
-        var component = Component.literal(String.valueOf(drop.getRange().getFirst()));
-        var chance = drop.getChance() * 100;
-        var chanceString = chance < 10 ? String.format("%.1f", chance) : String.format("%2d", (int)chance);
-        if (drop.getRange().getFirst() != drop.getRange().getLast()) {
-            component.append("-" + drop.getRange().getLast());
-        }
-        component.append((drop.getChance() < 1F ? " (" + chanceString + "%)" : ""));
-        tooltip.add(component);
+        // Pokemon Evo
+        pose.pushPose();
+        graphics.enableScissor((int)l1 + 91, (int)t1 + 13, (int)l1 + 150, (int)t1 + 92);
+        pose.translate(120, 13, 0);
+        pose.scale(1F, 1F, 1F);
+        pose.pushPose();
+        PokemonGuiUtilsKt.drawProfilePokemon(
+                pokemonEvo,
+                pose,
+                QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, rotationY, 0F)),
+                state,
+                partialTicks,
+                40F
+        );
+        pose.popPose();
+        graphics.disableScissor();
+        pose.popPose();
     }
 }

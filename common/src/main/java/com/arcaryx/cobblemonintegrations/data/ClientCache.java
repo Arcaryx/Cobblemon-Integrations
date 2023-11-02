@@ -9,6 +9,7 @@ import java.util.*;
 
 public class ClientCache {
     private static final Map<Pair<ResourceLocation, String>, List<PokemonDrop>> pokemonDrops = new HashMap<>();
+    private static final List<PokemonItemEvo> pokemonItemEvos = new ArrayList<>();
 
     public static void setPokemonDrops(List<PokemonDrop> drops) {
         pokemonDrops.clear();
@@ -37,5 +38,14 @@ public class ClientCache {
         Collections.sort(drops1);
         Collections.sort(drops2);
         return drops1.equals(drops2);
+    }
+
+    public static void setPokemonItemEvos(List<PokemonItemEvo> evos) {
+        pokemonItemEvos.clear();
+        pokemonItemEvos.addAll(evos);
+    }
+
+    public static List<PokemonItemEvo> getPokemonItemEvos() {
+        return pokemonItemEvos;
     }
 }

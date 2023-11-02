@@ -2,12 +2,16 @@ package com.arcaryx.cobblemonintegrations.mixin.minecraft;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.data.PokemonDrop;
+import com.arcaryx.cobblemonintegrations.data.PokemonItemEvo;
 import com.arcaryx.cobblemonintegrations.net.messages.SyncDropsMessage;
+import com.arcaryx.cobblemonintegrations.net.messages.SyncEvoItemsMessage;
 import com.cobblemon.mod.common.api.drop.ItemDropEntry;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.Species;
+import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
 import kotlin.ranges.IntRange;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -30,9 +34,12 @@ public abstract class MixinPlayerList {
     private void mixinReloadResources(CallbackInfo ci) {
         // TODO: Verify this is even used, since JEI might not refresh categories on reload
         var lootDrops = computeLootDrops();
+        var itemEvos = computeItemEvos();
         for (var player : this.players) {
             CobblemonIntegrations.NETWORK.sendToPlayer(player, new SyncDropsMessage(lootDrops));
+            CobblemonIntegrations.NETWORK.sendToPlayer(player, new SyncEvoItemsMessage(itemEvos));
         }
+
     }
 
     @Inject(method = "placeNewPlayer",
@@ -40,7 +47,9 @@ public abstract class MixinPlayerList {
     private void mixinPlaceNewPlayer(Connection netManager, ServerPlayer player, CallbackInfo ci) {
         // TODO: This only needs to be computed once
         var lootDrops = computeLootDrops();
+        var itemEvos = computeItemEvos();
         CobblemonIntegrations.NETWORK.sendToPlayer(player, new SyncDropsMessage(lootDrops));
+        CobblemonIntegrations.NETWORK.sendToPlayer(player, new SyncEvoItemsMessage(itemEvos));
     }
 
     private static void addDrops(List<PokemonDrop> lootDrops, Species species, FormData form) {
@@ -72,4 +81,32 @@ public abstract class MixinPlayerList {
         }
         return lootDrops;
     }
+
+    private static List<PokemonItemEvo> computeItemEvos() {
+        List<PokemonItemEvo> itemEvos = new ArrayList<>();
+        for (var species : PokemonSpecies.INSTANCE.getSpecies()) {
+            var forms = species.getForms().isEmpty() ? List.of(species.getStandardForm()) : species.getForms();
+            for (var form : forms) {
+                for (var evolution : form.getEvolutions()) {
+                    if (evolution instanceof ItemInteractionEvolution itemEvolution) {
+                        var speciesEvo = PokemonSpecies.INSTANCE.getByName(evolution.getResult().getSpecies());
+                        FormData formEvo;
+                        if (itemEvolution.getResult().getForm() != null) {
+                            var speciesForms = speciesEvo.getForms().isEmpty() ? List.of(speciesEvo.getStandardForm()) : species.getForms();
+                            formEvo = speciesForms.stream().filter(x -> x.getName().equalsIgnoreCase(evolution.getResult().getForm())).findFirst().orElse(speciesEvo.getStandardForm());
+                        } else {
+                            formEvo = speciesEvo.getForm(evolution.getResult().getAspects());
+                        }
+                        var itemReqs = itemEvolution.getRequiredContext().getItem();
+                        var validItems = BuiltInRegistries.ITEM.stream().filter(x -> itemReqs.fits(x, BuiltInRegistries.ITEM)).toList();
+                        if (!validItems.isEmpty()) {
+                            itemEvos.add(new PokemonItemEvo(species.getResourceIdentifier(), form.getName(), speciesEvo.getResourceIdentifier(), formEvo.getName(), validItems.stream().map(BuiltInRegistries.ITEM::getKey).toList()));
+                        }
+                    }
+                }
+            }
+        }
+        return itemEvos;
+    }
+
 }

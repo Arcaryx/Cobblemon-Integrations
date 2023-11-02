@@ -4,6 +4,8 @@ import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.data.ClientCache;
 import com.arcaryx.cobblemonintegrations.jei.drops.DropsJeiCategory;
 import com.arcaryx.cobblemonintegrations.jei.drops.DropsWrapper;
+import com.arcaryx.cobblemonintegrations.jei.evoitems.EvoItemsJeiCategory;
+import com.arcaryx.cobblemonintegrations.jei.evoitems.EvoItemsWrapper;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.client.render.models.blockbench.repository.PokemonModelRepository;
 import mezz.jei.api.IModPlugin;
@@ -23,6 +25,8 @@ import java.util.Set;
 public class CobblemonJeiPlugin implements IModPlugin {
     public static final ResourceLocation DROPS = new ResourceLocation(CobblemonIntegrations.MOD_ID, "cobblemon_drops");
     public static final RecipeType<DropsWrapper> DROPS_TYPE = new RecipeType<>(DROPS, DropsWrapper.class);
+    public static final ResourceLocation EVO_ITEMS = new ResourceLocation(CobblemonIntegrations.MOD_ID, "cobblemon_evoitems");
+    public static final RecipeType<EvoItemsWrapper> EVO_ITEMS_TYPE = new RecipeType<>(EVO_ITEMS, EvoItemsWrapper.class);
 
     private static IJeiHelpers jeiHelpers;
 
@@ -50,13 +54,29 @@ public class CobblemonJeiPlugin implements IModPlugin {
             }
         }
         registration.addRecipes(DROPS_TYPE, drops);
+        // Evolution Items
+        List<EvoItemsWrapper> evoItems = new ArrayList<>();
+        for (var itemEvo : ClientCache.getPokemonItemEvos()) {
+            var speciesBase = itemEvo.getSpeciesBase();
+            var formBase = itemEvo.getFormBase();
+            var baseTexture = PokemonModelRepository.INSTANCE.getTexture(speciesBase.getResourceIdentifier(), Set.copyOf(speciesBase.getStandardForm().getAspects()), 0);
+            var formTexture = PokemonModelRepository.INSTANCE.getTexture(speciesBase.getResourceIdentifier(), Set.copyOf(formBase.getAspects()), 0);
+            var isSubstitute = formTexture.getPath().contains("substitute");
+            var isBaseForm = formBase.getName().equals(speciesBase.getStandardForm().getName()) || formBase.getName().equalsIgnoreCase("base");
+            var hasNewTexture = baseTexture != formTexture;
+            if (isSubstitute || (!isBaseForm && !hasNewTexture))
+                continue;
+            evoItems.add(new EvoItemsWrapper(speciesBase, formBase, itemEvo.getSpeciesEvo(), itemEvo.getFormEvo(), itemEvo.getValidItems()));
+        }
+        registration.addRecipes(EVO_ITEMS_TYPE, evoItems);
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         CobblemonJeiPlugin.jeiHelpers = registration.getJeiHelpers();
         registration.addRecipeCategories(
-            new DropsJeiCategory()
+            new DropsJeiCategory(),
+            new EvoItemsJeiCategory()
         );
     }
 
