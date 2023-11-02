@@ -6,8 +6,8 @@
   "neededUninstalledMods": [],
   "spawns": [
     {
-      "id": "umbreon-test",
-      "pokemon": "umbreon",
+      "id": "umbreon-blood-moon-1",
+      "pokemon": "umbreon blood_moon",
       "presets": [
         "natural"
       ],

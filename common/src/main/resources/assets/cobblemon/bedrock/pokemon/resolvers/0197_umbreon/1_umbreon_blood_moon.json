@@ -1,0 +1,37 @@
+{
+  "species": "cobblemon:umbreon",
+  "order": 1,
+  "variations": [
+    {
+      "aspects": [
+        "blood_moon"
+      ],
+      "poser": "cobblemon:umbreon",
+      "model": "cobblemon:umbreon.geo",
+      "texture": "cobblemon:textures/pokemon/0197_umbreon/umbreon_blood_moon.png",
+      "layers": [
+        {
+              "name": "emissive",
+              "emissive": true,
+              "texture": "cobblemon:textures/pokemon/0197_umbreon/umbreon_blood_moon_emissive.png",
+              "translucent": true
+        }
+      ]
+    },
+    {
+      "aspects": [
+        "blood_moon",
+        "shiny"
+      ],
+      "texture": "cobblemon:textures/pokemon/0197_umbreon/umbreon_blood_moon_shiny.png",
+      "layers": [
+        {
+              "name": "emissive",
+              "emissive": true,
+              "texture": "cobblemon:textures/pokemon/0197_umbreon/umbreon_blood_moon_shiny_emissive.png",
+              "translucent": true
+        }
+      ]
+    }
+  ]
+}
