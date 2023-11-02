@@ -1,0 +1,22 @@
+{
+  "species": "cobblemon:leafeon",
+  "order": 1,
+  "variations": [
+    {
+      "aspects": [
+        "harvest_moon"
+      ],
+      "poser": "cobblemon:leafeon",
+      "model": "cobblemon:leafeon.geo",
+      "texture": "cobblemon:textures/pokemon/0470_leafeon/leafeon_harvest_moon.png",
+      "layers": []
+    },
+    {
+      "aspects": [
+        "harvest_moon",
+        "shiny"
+      ],
+      "texture": "cobblemon:textures/pokemon/0470_leafeon/leafeon_harvest_moon_shiny.png"
+    }
+  ]
+}

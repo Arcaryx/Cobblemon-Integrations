@@ -1,0 +1,6 @@
+{
+  "keys": ["harvest_moon"],
+  "type": "flag",
+  "isAspect": true,
+  "default": false
+}
