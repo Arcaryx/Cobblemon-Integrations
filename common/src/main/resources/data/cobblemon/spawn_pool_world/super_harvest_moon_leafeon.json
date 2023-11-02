@@ -6,14 +6,14 @@
   "neededUninstalledMods": [],
   "spawns": [
     {
-      "id": "umbreon-blood-moon-1",
-      "pokemon": "umbreon blood_moon",
+      "id": "leafeon-super-harvest-moon-1",
+      "pokemon": "leafeon harvest_moon",
       "presets": [
         "natural"
       ],
       "type": "pokemon",
       "context": "grounded",
-      "bucket": "ultra-rare",
+      "bucket": "rare",
       "level": "28-53",
       "weight": 1.0,
       "condition": {
@@ -21,7 +21,7 @@
         "biomes": [
           "#cobblemon:is_overworld"
         ],
-        "lunarEvent": "enhancedcelestials:blood_moon"
+        "lunarEvent": "enhancedcelestials:super_harvest_moon"
       }
     }
   ]

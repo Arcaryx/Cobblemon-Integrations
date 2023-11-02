@@ -13,4 +13,5 @@ public interface IConfig {
     int waystoneMinTeleportLevel();
     boolean requireTeleportMove();
     boolean applyInPVP();
+    boolean allowLunarEventSpawns();
 }

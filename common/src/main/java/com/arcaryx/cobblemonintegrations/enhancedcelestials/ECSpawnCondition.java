@@ -1,5 +1,6 @@
 package com.arcaryx.cobblemonintegrations.enhancedcelestials;
 
+import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.cobblemon.mod.common.api.spawning.condition.AppendageCondition;
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
 import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail;
@@ -22,6 +23,9 @@ public class ECSpawnCondition {
         public boolean fits(@NotNull SpawningContext spawningContext, @NotNull SpawnDetail spawnDetail) {
             if (lunarEvent == null) {
                 return true;
+            }
+            if (!CobblemonIntegrations.CONFIG.allowLunarEventSpawns()) {
+                return false;
             }
             EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)spawningContext.getWorld()).getLunarContext();
             return enhancedCelestialsContext != null && enhancedCelestialsContext.getLunarForecast().getCurrentEventRaw().is(this.lunarEvent);

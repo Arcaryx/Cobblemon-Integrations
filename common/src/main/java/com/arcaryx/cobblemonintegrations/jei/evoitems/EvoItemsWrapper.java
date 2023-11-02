@@ -63,7 +63,7 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension {
         graphics.drawString(Minecraft.getInstance().font, component, 2, 1, Objects.requireNonNull(ChatFormatting.WHITE.getColor()));
         pose.popPose();
 
-        var pokemonBase = new RenderablePokemon(speciesBase, new HashSet<>(formEvo.getAspects()));
+        var pokemonBase = new RenderablePokemon(speciesBase, new HashSet<>(formBase.getAspects()));
         var pokemonEvo = new RenderablePokemon(speciesEvo, new HashSet<>(formEvo.getAspects()));
 
         var m1 = pose.last().pose();
