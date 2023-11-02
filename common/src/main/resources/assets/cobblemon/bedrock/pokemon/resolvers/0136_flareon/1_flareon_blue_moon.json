@@ -1,0 +1,22 @@
+{
+  "species": "cobblemon:flareon",
+  "order": 1,
+  "variations": [
+    {
+      "aspects": [
+        "blue_moon"
+      ],
+      "poser": "cobblemon:flareon",
+      "model": "cobblemon:flareon.geo",
+      "texture": "cobblemon:textures/pokemon/0136_flareon/flareon_blue_moon.png",
+      "layers": []
+    },
+    {
+      "aspects": [
+        "blue_moon",
+        "shiny"
+      ],
+      "texture": "cobblemon:textures/pokemon/0136_flareon/flareon_blue_moon_shiny.png"
+    }
+  ]
+}
