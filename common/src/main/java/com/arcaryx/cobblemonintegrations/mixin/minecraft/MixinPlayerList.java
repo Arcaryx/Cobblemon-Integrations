@@ -89,7 +89,12 @@ public abstract class MixinPlayerList {
             for (var form : forms) {
                 for (var evolution : form.getEvolutions()) {
                     if (evolution instanceof ItemInteractionEvolution itemEvolution) {
-                        var speciesEvo = PokemonSpecies.INSTANCE.getByName(evolution.getResult().getSpecies());
+                        var evoResult = evolution.getResult().getSpecies();
+                        if (evoResult == null) {
+                            CobblemonIntegrations.LOGGER.warn("Null evolution result from species: " + species.getName());
+                            continue;
+                        }
+                        var speciesEvo = PokemonSpecies.INSTANCE.getByName(evoResult);
                         FormData formEvo;
                         if (itemEvolution.getResult().getForm() != null) {
                             var speciesForms = speciesEvo.getForms().isEmpty() ? List.of(speciesEvo.getStandardForm()) : species.getForms();
