@@ -16,8 +16,6 @@ public class CobblemonIntegrations
 	public static void init() {
 		NETWORK.registerMessagesServer();
 
-		NeededInstalledModsFix.register();
-
 		if (CONFIG.isModLoaded("enhancedcelestials")) {
 			ECSpawnCondition.register();
 		}

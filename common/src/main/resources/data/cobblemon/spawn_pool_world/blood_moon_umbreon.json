@@ -1,12 +1,12 @@
 {
   "enabled": true,
-  "neededInstalledMods": [
-    "enhancedcelestials"
-  ],
   "neededUninstalledMods": [],
   "spawns": [
     {
       "id": "umbreon-blood-moon-1",
+      "neededInstalledMods": [
+        "enhancedcelestials"
+      ],
       "pokemon": "umbreon blood_moon",
       "presets": [
         "natural"
@@ -15,14 +15,11 @@
       "context": "grounded",
       "bucket": "ultra-rare",
       "level": "28-53",
-      "weight": 1.0,
+      "weight": 5.0,
       "condition": {
         "canSeeSky": true,
         "biomes": [
           "#cobblemon:is_overworld"
-        ],
-        "neededInstalledMods": [
-          "enhancedcelestials"
         ],
         "lunarEvent": "enhancedcelestials:blood_moon"
       }
