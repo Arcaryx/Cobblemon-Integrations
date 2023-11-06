@@ -21,6 +21,9 @@
         "biomes": [
           "#cobblemon:is_overworld"
         ],
+        "neededInstalledMods": [
+          "enhancedcelestials"
+        ],
         "lunarEvent": "enhancedcelestials:harvest_moon"
       }
     }
