@@ -1,0 +1,99 @@
+{
+  "target": "cobblemon:eevee",
+  "evolutions": [
+    {
+      "id": "eevee_flareon_blue_moon",
+      "variant": "item_interact",
+      "result": "flareon blue_moon",
+      "consumeHeldItem": false,
+      "learnableMoves": [
+        "ember"
+      ],
+      "requirements": [
+        {
+          "variant": "lunar_event",
+          "lunarEvent": "enhancedcelestials:blue_moon"
+        }
+      ],
+      "requiredContext": "cobblemon:fire_stone"
+    },
+    {
+      "id": "eevee_flareon_super_blue_moon",
+      "variant": "item_interact",
+      "result": "flareon blue_moon",
+      "consumeHeldItem": false,
+      "learnableMoves": [
+        "ember"
+      ],
+      "requirements": [
+        {
+          "variant": "lunar_event",
+          "lunarEvent": "enhancedcelestials:super_blue_moon"
+        }
+      ],
+      "requiredContext": "cobblemon:fire_stone"
+    },
+    {
+      "id": "eevee_umbreon_blood_moon",
+      "variant": "level_up",
+      "result": "umbreon blood_moon",
+      "consumeHeldItem": false,
+      "learnableMoves": [],
+      "requirements": [
+        {
+          "variant": "friendship",
+          "amount": 160
+        },
+        {
+          "variant": "lunar_event",
+          "lunarEvent": "enhancedcelestials:blood_moon"
+        }
+      ]
+    },
+    {
+      "id": "eevee_umbreon_super_blood_moon",
+      "variant": "level_up",
+      "result": "umbreon blood_moon",
+      "consumeHeldItem": false,
+      "learnableMoves": [],
+      "requirements": [
+        {
+          "variant": "friendship",
+          "amount": 160
+        },
+        {
+          "variant": "lunar_event",
+          "lunarEvent": "enhancedcelestials:super_blood_moon"
+        }
+      ]
+    },
+    {
+      "id": "eevee_leafeon_harvest_moon",
+      "variant": "item_interact",
+      "result": "leafeon harvest_moon",
+      "consumeHeldItem": false,
+      "learnableMoves": [],
+      "requirements": [
+        {
+          "variant": "lunar_event",
+          "lunarEvent": "enhancedcelestials:harvest_moon"
+        }
+      ],
+      "requiredContext": "cobblemon:leaf_stone"
+    },
+    {
+      "id": "eevee_leafeon_super_harvest_moon",
+      "variant": "item_interact",
+      "result": "leafeon harvest_moon",
+      "consumeHeldItem": false,
+      "learnableMoves": [],
+      "requirements": [
+        {
+          "variant": "lunar_event",
+          "lunarEvent": "enhancedcelestials:super_harvest_moon"
+        }
+      ],
+      "requiredContext": "cobblemon:leaf_stone"
+    }
+  ]
+}

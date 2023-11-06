@@ -2,7 +2,10 @@ package com.arcaryx.cobblemonintegrations;
 
 import com.arcaryx.cobblemonintegrations.config.IConfig;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventCondition;
+import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventRequirement;
 import com.arcaryx.cobblemonintegrations.net.AbstractNetworkHandler;
+import com.cobblemon.mod.common.pokemon.evolution.adapters.CobblemonRequirementAdapter;
+import kotlin.jvm.internal.Reflection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +21,7 @@ public class CobblemonIntegrations
 
 		if (CONFIG.isModLoaded("enhancedcelestials")) {
 			LunarEventCondition.register();
+			CobblemonRequirementAdapter.INSTANCE.registerType(LunarEventRequirement.ADAPTER_VARIANT, Reflection.getOrCreateKotlinClass(LunarEventRequirement.class));
 		}
 	}
 }

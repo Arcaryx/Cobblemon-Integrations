@@ -35,7 +35,7 @@ public class FabricConfig implements IConfig {
     private int waystoneMinTeleportLevel = 0;
 
     // Enhanced Celestials
-    private boolean applyInPVP = false, allowLunarEventSpawns = true;
+    private boolean applyInPVP = false, allowLunarEventVariants = true;
 
 
     public static FabricConfig load() {
@@ -57,7 +57,7 @@ public class FabricConfig implements IConfig {
             this.requireTeleportMove = config.requireTeleportMove;
             this.waystoneMinTeleportLevel = config.waystoneMinTeleportLevel;
             this.applyInPVP = config.applyInPVP;
-            this.allowLunarEventSpawns = config.allowLunarEventSpawns;
+            this.allowLunarEventVariants = config.allowLunarEventVariants;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,7 +107,7 @@ public class FabricConfig implements IConfig {
     }
 
     @Override
-    public boolean allowLunarEventSpawns() {
+    public boolean allowLunarEventVariants() {
         return allowLunarEventSpawns;
     }
 }

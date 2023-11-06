@@ -22,7 +22,7 @@ public class LunarEventCondition implements AppendageCondition {
         if (lunarEvent == null) {
             return true;
         }
-        if (!CobblemonIntegrations.CONFIG.allowLunarEventSpawns()) {
+        if (!CobblemonIntegrations.CONFIG.allowLunarEventVariants()) {
             return false;
         }
         EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)spawningContext.getWorld()).getLunarContext();

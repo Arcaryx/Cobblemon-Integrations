@@ -28,7 +28,7 @@ public class ForgeConfig implements IConfig {
     private ForgeConfigSpec.IntValue waystoneMinTeleportLevel;
 
     // Enhanced Celestials
-    private ForgeConfigSpec.BooleanValue applyInPVP, allowLunarEventSpawns;
+    private ForgeConfigSpec.BooleanValue applyInPVP, allowLunarEventVariants;
 
 
     public ForgeConfig(ForgeConfigSpec.Builder builder) {
@@ -125,9 +125,9 @@ public class ForgeConfig implements IConfig {
             applyInPVP = builder
                     .comment("Apply EXP/EV changes only in wild battles?")
                     .define("applyInPVP", false);
-            allowLunarEventSpawns = builder
-                    .comment("Allow Pokemon to spawn using the lunarEvent condition? (setting to False will disable all lunar event spawns)")
-                    .define("allowLunarEventSpawns", true);
+            allowLunarEventVariants = builder
+                    .comment("Allow Pokemon to spawn/evolve using the lunarEvent conditions? (setting to False will disable all lunar event variants)")
+                    .define("allowLunarEventVariants", true);
             builder.pop();
         }
     }
@@ -177,7 +177,7 @@ public class ForgeConfig implements IConfig {
     }
 
     @Override
-    public boolean allowLunarEventSpawns() {
-        return allowLunarEventSpawns.get();
+    public boolean allowLunarEventVariants() {
+        return allowLunarEventVariants.get();
     }
 }
