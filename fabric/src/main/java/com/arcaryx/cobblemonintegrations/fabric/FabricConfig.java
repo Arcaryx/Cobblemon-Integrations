@@ -108,6 +108,6 @@ public class FabricConfig implements IConfig {
 
     @Override
     public boolean allowLunarEventVariants() {
-        return allowLunarEventSpawns;
+        return allowLunarEventVariants;
     }
 }
