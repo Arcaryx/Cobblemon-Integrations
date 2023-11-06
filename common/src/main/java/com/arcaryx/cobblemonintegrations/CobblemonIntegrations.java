@@ -1,7 +1,7 @@
 package com.arcaryx.cobblemonintegrations;
 
 import com.arcaryx.cobblemonintegrations.config.IConfig;
-import com.arcaryx.cobblemonintegrations.enhancedcelestials.ECSpawnCondition;
+import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventCondition;
 import com.arcaryx.cobblemonintegrations.net.AbstractNetworkHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ public class CobblemonIntegrations
 		NETWORK.registerMessagesServer();
 
 		if (CONFIG.isModLoaded("enhancedcelestials")) {
-			ECSpawnCondition.register();
+			LunarEventCondition.register();
 		}
 	}
 }
