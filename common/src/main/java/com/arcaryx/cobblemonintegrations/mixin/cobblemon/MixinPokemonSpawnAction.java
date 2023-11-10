@@ -1,7 +1,7 @@
 package com.arcaryx.cobblemonintegrations.mixin.cobblemon;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
-import com.arcaryx.cobblemonintegrations.enhancedcelestials.ECHandler;
+import com.arcaryx.cobblemonintegrations.enhancedcelestials.EnhancedCelestialsHandler;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
 import com.cobblemon.mod.common.api.spawning.detail.PokemonSpawnAction;
@@ -25,7 +25,7 @@ abstract class MixinPokemonSpawnAction extends SpawnAction<PokemonEntity> {
     @Inject(method = "createEntity()Lcom/cobblemon/mod/common/entity/pokemon/PokemonEntity;", at = @At("HEAD"))
     private void adjustCreateEntity(CallbackInfoReturnable<PokemonEntity> cir) {
         if (CobblemonIntegrations.CONFIG.isModLoaded("enhancedcelestials")) {
-            ECHandler.ECModifySpawns(props, getCtx());
+            EnhancedCelestialsHandler.ECModifySpawns(props, getCtx());
         }
     }
 

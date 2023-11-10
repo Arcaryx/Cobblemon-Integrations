@@ -7,7 +7,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
-public class WaystonesUtils {
+public class WaystonesHandler {
 
     public static boolean CanUseTeleport(Pokemon pokemon) {
         var hasTeleportLearned = pokemon.getMoveSet().getMoves().stream().anyMatch((x) -> x.getName().equals("teleport"));

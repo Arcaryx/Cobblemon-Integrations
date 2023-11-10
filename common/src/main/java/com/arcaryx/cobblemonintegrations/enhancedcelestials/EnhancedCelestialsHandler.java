@@ -9,12 +9,13 @@ import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
 import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import kotlin.math.MathKt;
 import kotlin.random.Random;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 import java.util.Map;
 
-public class ECHandler {
+public class EnhancedCelestialsHandler {
 
     public static void ECModifySpawns(PokemonProperties props, SpawningContext ctx) {
         var level = ctx.getWorld();
@@ -70,4 +71,10 @@ public class ECHandler {
             }
         }
     }
+
+    public static boolean IsOngoingLunarEvent(Level level, ResourceLocation lunarEvent) {
+        EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)level).getLunarContext();
+        return enhancedCelestialsContext != null && enhancedCelestialsContext.getLunarForecast().getCurrentEventRaw().is(lunarEvent);
+    }
+
 }

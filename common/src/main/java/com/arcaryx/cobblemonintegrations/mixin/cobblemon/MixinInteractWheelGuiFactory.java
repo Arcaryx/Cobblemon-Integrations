@@ -2,8 +2,7 @@ package com.arcaryx.cobblemonintegrations.mixin.cobblemon;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.net.messages.TeleportInteractMessage;
-import com.arcaryx.cobblemonintegrations.waystones.WaystonesUtils;
-import com.cobblemon.mod.common.api.types.ElementalTypes;
+import com.arcaryx.cobblemonintegrations.waystones.WaystonesHandler;
 import com.cobblemon.mod.common.client.CobblemonClient;
 import com.cobblemon.mod.common.client.gui.interact.wheel.InteractWheelGUI;
 import com.cobblemon.mod.common.client.gui.interact.wheel.InteractWheelGuiFactoryKt;
@@ -20,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @Mixin(value = InteractWheelGuiFactoryKt.class)
@@ -33,7 +31,7 @@ abstract class MixinInteractWheelGuiFactory {
                     .filter((x) -> x.getEntity() != null && x.getEntity().getUUID().equals(pokemonID)).findFirst();
             if (pokemonOpt.isPresent()) {
                 var pokemon = pokemonOpt.get();
-                if (WaystonesUtils.CanUseTeleport(pokemon)) {
+                if (WaystonesHandler.CanUseTeleport(pokemon)) {
                     var teleport = new InteractWheelOption(
                             new ResourceLocation(CobblemonIntegrations.MOD_ID, "textures/gui/icon_teleport.png"),
                             () -> new Vector3f(1f, 1f, 1f),

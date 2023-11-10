@@ -3,8 +3,6 @@ package com.arcaryx.cobblemonintegrations.enhancedcelestials;
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.pokemon.evolution.requirements.template.EntityQueryRequirement;
-import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
-import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
@@ -30,10 +28,9 @@ public class LunarEventRequirement implements EntityQueryRequirement {
 
     @Override
     public boolean check(@NotNull Pokemon pokemon, @NotNull LivingEntity queriedEntity) {
-        if (!CobblemonIntegrations.CONFIG.allowLunarEventVariants()) {
+        if (!CobblemonIntegrations.CONFIG.isModLoaded("enhancedcelestials") || !CobblemonIntegrations.CONFIG.allowLunarEventVariants()) {
             return false;
         }
-        EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)queriedEntity.level()).getLunarContext();
-        return enhancedCelestialsContext != null && enhancedCelestialsContext.getLunarForecast().getCurrentEventRaw().is(this.lunarEvent);
+        return EnhancedCelestialsHandler.IsOngoingLunarEvent(queriedEntity.level(), lunarEvent);
     }
 }

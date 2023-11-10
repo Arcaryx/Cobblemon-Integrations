@@ -19,10 +19,7 @@ public class CobblemonIntegrations
 	public static void init() {
 		NETWORK.registerMessagesServer();
 
-		// TODO: Swap to neededInstalledMods when possible
-		if (CONFIG.isModLoaded("enhancedcelestials")) {
-			LunarEventCondition.register();
-			CobblemonRequirementAdapter.INSTANCE.registerType(LunarEventRequirement.ADAPTER_VARIANT, Reflection.getOrCreateKotlinClass(LunarEventRequirement.class));
-		}
+		LunarEventCondition.register();
+		CobblemonRequirementAdapter.INSTANCE.registerType(LunarEventRequirement.ADAPTER_VARIANT, Reflection.getOrCreateKotlinClass(LunarEventRequirement.class));
 	}
 }

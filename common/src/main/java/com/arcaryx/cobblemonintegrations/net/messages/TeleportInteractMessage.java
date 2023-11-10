@@ -1,8 +1,7 @@
 package com.arcaryx.cobblemonintegrations.net.messages;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
-import com.arcaryx.cobblemonintegrations.waystones.WaystonesUtils;
-import com.cobblemon.mod.common.api.types.ElementalTypes;
+import com.arcaryx.cobblemonintegrations.waystones.WaystonesHandler;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class TeleportInteractMessage extends AbstractMessage {
@@ -52,7 +50,7 @@ public class TeleportInteractMessage extends AbstractMessage {
             return;
         }
         var pokemon = pokemonEntity.getPokemon();
-        if (!WaystonesUtils.CanUseTeleport(pokemon)) {
+        if (!WaystonesHandler.CanUseTeleport(pokemon)) {
             return;
         }
         Balm.getNetworking().openGui(player, containerProvider);

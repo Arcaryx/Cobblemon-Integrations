@@ -4,8 +4,6 @@ import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.cobblemon.mod.common.api.spawning.condition.AppendageCondition;
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
 import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail;
-import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
-import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +11,7 @@ public class LunarEventCondition implements AppendageCondition {
     public ResourceLocation lunarEvent;
 
     public static void register() {
-        //AppendageCondition.Companion.registerAppendage(AreaSpawningCondition.class, LunarEventCondition.class);
+        // TODO: AppendageCondition.Companion.registerAppendage(AreaSpawningCondition.class, LunarEventCondition.class);
         AppendageCondition.Companion.registerAppendage(LunarEventCondition.class, x -> true);
     }
 
@@ -22,10 +20,9 @@ public class LunarEventCondition implements AppendageCondition {
         if (lunarEvent == null) {
             return true;
         }
-        if (!CobblemonIntegrations.CONFIG.allowLunarEventVariants()) {
+        if (!CobblemonIntegrations.CONFIG.isModLoaded("enhancedcelestials") || !CobblemonIntegrations.CONFIG.allowLunarEventVariants()) {
             return false;
         }
-        EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)spawningContext.getWorld()).getLunarContext();
-        return enhancedCelestialsContext != null && enhancedCelestialsContext.getLunarForecast().getCurrentEventRaw().is(this.lunarEvent);
+        return EnhancedCelestialsHandler.IsOngoingLunarEvent(spawningContext.getWorld(), lunarEvent);
     }
 }

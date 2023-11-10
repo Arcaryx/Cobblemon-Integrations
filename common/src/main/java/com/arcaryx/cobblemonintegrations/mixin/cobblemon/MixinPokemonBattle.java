@@ -1,7 +1,7 @@
 package com.arcaryx.cobblemonintegrations.mixin.cobblemon;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
-import com.arcaryx.cobblemonintegrations.enhancedcelestials.ECHandler;
+import com.arcaryx.cobblemonintegrations.enhancedcelestials.EnhancedCelestialsHandler;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.pokemon.experience.ExperienceCalculator;
 import com.cobblemon.mod.common.api.pokemon.stats.EvCalculator;
@@ -22,7 +22,7 @@ abstract class MixinPokemonBattle {
         if (CobblemonIntegrations.CONFIG.isModLoaded("enhancedcelestials") &&
                 opponentPokemon.getOriginalPokemon().isPlayerOwned() &&
                 (CobblemonIntegrations.CONFIG.applyInPVP() || faintedPokemon.getOriginalPokemon().isWild())) {
-            baseExp = ECHandler.ECModifyBattleExp(baseExp, opponentPokemon.getOriginalPokemon().getOwnerPlayer().level());
+            baseExp = EnhancedCelestialsHandler.ECModifyBattleExp(baseExp, opponentPokemon.getOriginalPokemon().getOwnerPlayer().level());
         }
         return baseExp;
     }
@@ -33,7 +33,7 @@ abstract class MixinPokemonBattle {
         if (CobblemonIntegrations.CONFIG.isModLoaded("enhancedcelestials") &&
                 opponentPokemon.getOriginalPokemon().isPlayerOwned() &&
                 (CobblemonIntegrations.CONFIG.applyInPVP() || faintedPokemon.getOriginalPokemon().isWild())) {
-            ECHandler.ECModifyBattleEVs(baseChanges, opponentPokemon.getOriginalPokemon().getOwnerPlayer().level());
+            EnhancedCelestialsHandler.ECModifyBattleEVs(baseChanges, opponentPokemon.getOriginalPokemon().getOwnerPlayer().level());
         }
         return baseChanges;
     }
