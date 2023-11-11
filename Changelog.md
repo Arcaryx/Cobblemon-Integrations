@@ -1,3 +1,9 @@
+### 1.0.3 Changes:
+- Added check for null species to prevent crashes with incomplete mods like Gravelmon.
+- Lunar event spawns now only spawn with the Enhanced Celestials mod.
+- Added "lunarEvent" evolution condition.
+- Misc fixes for JEI item evolution catalog, working towards condition tooltips.
+- Lunar event variants can now be evolved during super moons.
 ### 1.0.2 Changes:
 - Added JEI catalog for item-interaction evolutions.
 - Added Blood Moon Umbreon, Harvest Moon Leafeon, and Blue Moon Flareon reskins. These spawn during their respective lunar events, and can be disabled/modified via resource pack or config.
