@@ -2,6 +2,7 @@ package com.arcaryx.cobblemonintegrations.data;
 
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.Species;
+import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 

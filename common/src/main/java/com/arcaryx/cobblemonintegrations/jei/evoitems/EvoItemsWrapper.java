@@ -1,15 +1,18 @@
 package com.arcaryx.cobblemonintegrations.jei.evoitems;
 
+import com.arcaryx.cobblemonintegrations.data.PokemonItemEvo;
+import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import com.cobblemon.mod.common.api.pokemon.feature.FlagSpeciesFeature;
 import com.cobblemon.mod.common.client.gui.PokemonGuiUtilsKt;
 import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonFloatingState;
-import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
-import com.cobblemon.mod.common.pokemon.Species;
+import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
 import com.cobblemon.mod.common.util.math.QuaternionUtilsKt;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
@@ -22,21 +25,16 @@ import java.util.Objects;
 
 public class EvoItemsWrapper implements IRecipeCategoryExtension {
 
-    private final Species speciesBase;
-    private final FormData formBase;
-    private final Species speciesEvo;
-    private final FormData formEvo;
+    private final PokemonItemEvo itemEvo;
+
     private final List<Item> validItems;
 
     private PokemonFloatingState state;
     private long last;
 
-    public EvoItemsWrapper(Species speciesBase, FormData formBase, Species speciesEvo, FormData formEvo, List<Item> validItems) {
-        this.speciesBase = speciesBase;
-        this.formBase = formBase;
-        this.speciesEvo = speciesEvo;
-        this.formEvo = formEvo;
-        this.validItems = validItems;
+    public EvoItemsWrapper(PokemonItemEvo itemEvo) {
+        this.itemEvo = itemEvo;
+        this.validItems = BuiltInRegistries.ITEM.stream().filter(x -> itemEvo.getItemEvo().getRequiredContext().getItem().fits(x, BuiltInRegistries.ITEM)).toList();;
     }
 
     public List<Item> getValidItems() {
@@ -56,6 +54,8 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension {
         var pose = graphics.pose();
 
         pose.pushPose();
+        var speciesBase = PokemonSpecies.INSTANCE.getByIdentifier(itemEvo.getSpecies());
+        var formBase = speciesBase.getForms().stream().filter(x -> x.getName().equals(itemEvo.getForm())).findFirst().orElse(speciesBase.getStandardForm());
         var component = speciesBase.getTranslatedName();
         if (speciesBase.getStandardForm() != formBase && !formBase.getName().equalsIgnoreCase("base")) {
             component.append(Component.literal(String.format(" (%s)", formBase.getName())));
@@ -63,8 +63,21 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension {
         graphics.drawString(Minecraft.getInstance().font, component, 2, 1, Objects.requireNonNull(ChatFormatting.WHITE.getColor()));
         pose.popPose();
 
+
         var pokemonBase = new RenderablePokemon(speciesBase, new HashSet<>(formBase.getAspects()));
-        var pokemonEvo = new RenderablePokemon(speciesEvo, new HashSet<>(formEvo.getAspects()));
+        var evoAspects = new HashSet<>(formBase.getAspects());
+        var evoSpecies = PokemonSpecies.INSTANCE.getByName(itemEvo.getItemEvo().getResult().getSpecies());
+        for (var prop : itemEvo.getItemEvo().getResult().getCustomProperties()) {
+            if (prop instanceof FlagSpeciesFeature sf) {
+                if (sf.getEnabled()) {
+                    evoAspects.add(sf.getName());
+                } else {
+                    evoAspects.remove(sf.getName());
+                }
+            }
+        }
+
+        var pokemonEvo = new RenderablePokemon(evoSpecies, evoAspects);
 
         var m1 = pose.last().pose();
         var l1 = m1.m30();

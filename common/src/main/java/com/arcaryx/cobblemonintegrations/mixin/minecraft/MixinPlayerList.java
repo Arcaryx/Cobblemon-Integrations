@@ -3,12 +3,15 @@ package com.arcaryx.cobblemonintegrations.mixin.minecraft;
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.data.PokemonDrop;
 import com.arcaryx.cobblemonintegrations.data.PokemonItemEvo;
+import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventRequirement;
 import com.arcaryx.cobblemonintegrations.net.messages.SyncDropsMessage;
 import com.arcaryx.cobblemonintegrations.net.messages.SyncEvoItemsMessage;
 import com.cobblemon.mod.common.api.drop.ItemDropEntry;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.Species;
+import com.cobblemon.mod.common.pokemon.evolution.requirements.BiomeRequirement;
+import com.cobblemon.mod.common.pokemon.evolution.requirements.PokemonPropertiesRequirement;
 import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
 import kotlin.ranges.IntRange;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,8 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Mixin(value = PlayerList.class)
 public abstract class MixinPlayerList {
@@ -85,28 +87,45 @@ public abstract class MixinPlayerList {
     private static List<PokemonItemEvo> computeItemEvos() {
         List<PokemonItemEvo> itemEvos = new ArrayList<>();
         for (var species : PokemonSpecies.INSTANCE.getSpecies()) {
+            if (!species.getImplemented()) {
+                continue;
+            }
+            //for (var evolution : species.getEvolutions()) {
+            //    if (evolution instanceof ItemInteractionEvolution itemEvolution) {
+            //        itemEvos.add(new PokemonItemEvo(species.getResourceIdentifier(), "Normal", itemEvolution));
+            //    }
+            //}
+
             var forms = species.getForms().isEmpty() ? List.of(species.getStandardForm()) : species.getForms();
             for (var form : forms) {
                 for (var evolution : form.getEvolutions()) {
                     if (evolution instanceof ItemInteractionEvolution itemEvolution) {
-                        var evoResult = evolution.getResult().getSpecies();
-                        if (evoResult == null) {
-                            CobblemonIntegrations.LOGGER.warn("Null evolution result from species: " + species.getName());
+                        var reqs = itemEvolution.getRequirements();
+                        if (reqs.stream().anyMatch(x -> x instanceof LunarEventRequirement &&
+                                (!CobblemonIntegrations.CONFIG.isModLoaded("enhancedcelestials") ||
+                                        !CobblemonIntegrations.CONFIG.allowLunarEventVariants()))) {
                             continue;
                         }
-                        var speciesEvo = PokemonSpecies.INSTANCE.getByName(evoResult);
-                        FormData formEvo;
-                        if (itemEvolution.getResult().getForm() != null) {
-                            var speciesForms = speciesEvo.getForms().isEmpty() ? List.of(speciesEvo.getStandardForm()) : species.getForms();
-                            formEvo = speciesForms.stream().filter(x -> x.getName().equalsIgnoreCase(evolution.getResult().getForm())).findFirst().orElse(speciesEvo.getStandardForm());
-                        } else {
-                            formEvo = speciesEvo.getForm(evolution.getResult().getAspects());
-                        }
-                        var itemReqs = itemEvolution.getRequiredContext().getItem();
-                        var validItems = BuiltInRegistries.ITEM.stream().filter(x -> itemReqs.fits(x, BuiltInRegistries.ITEM)).toList();
-                        if (!validItems.isEmpty()) {
-                            itemEvos.add(new PokemonItemEvo(species.getResourceIdentifier(), form.getName(), speciesEvo.getResourceIdentifier(), formEvo.getName(), validItems.stream().map(BuiltInRegistries.ITEM::getKey).toList()));
-                        }
+                        //reqs.removeIf(x -> {
+                        //    if (x instanceof BiomeRequirement) {
+                        //        return false;
+                        //    }
+                        //    return true;
+                        //});
+                        reqs.clear();
+                        var stripped = new ItemInteractionEvolution(
+                            itemEvolution.getId(),
+                            itemEvolution.getResult(),
+                            itemEvolution.getRequiredContext(),
+                            itemEvolution.getOptional(),
+                            itemEvolution.getConsumeHeldItem(),
+                            reqs,
+                            itemEvolution.getLearnableMoves()
+                        );
+
+                        //if (itemEvolution.getRequirements().isEmpty()) {
+                        itemEvos.add(new PokemonItemEvo(species.getResourceIdentifier(), form.getName(), stripped));
+                        //}
                     }
                 }
             }
