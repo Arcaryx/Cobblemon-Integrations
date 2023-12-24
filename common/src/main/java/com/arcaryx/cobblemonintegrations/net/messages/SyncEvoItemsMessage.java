@@ -40,7 +40,7 @@ public class SyncEvoItemsMessage extends AbstractMessage {
         this.itemEvos = itemEvos;
     }
 
-
+    private FriendlyByteBuf buf;
 
     public class ItemIdentifierConditionAdapter implements JsonSerializer<ItemIdentifierCondition> {
         @Override
@@ -60,16 +60,7 @@ public class SyncEvoItemsMessage extends AbstractMessage {
     // Decoder
     public SyncEvoItemsMessage(FriendlyByteBuf buf) {
         super(buf);
-        var gson = PokemonSpecies.INSTANCE.getGson();
-        itemEvos = new ArrayList<>();
-        int size = buf.readInt();
-        itemEvos = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            var species = buf.readResourceLocation();
-            var form = buf.readUtf();
-            var itemEvo = gson.fromJson(buf.readUtf(), ItemInteractionEvolution.class);
-            itemEvos.add(new PokemonItemEvo(species, form, itemEvo));
-        }
+        this.buf = buf;
     }
 
     // Encoder
@@ -87,6 +78,20 @@ public class SyncEvoItemsMessage extends AbstractMessage {
     }
 
     public void handle(Player player) {
-        ClientCache.setPokemonItemEvos(itemEvos);
+        ClientCache.setEvoItemsMessage(this);
+    }
+
+    public void lateDecode() {
+        // Late decode to handle race condition (Caused by loading the ContextEvolution types later in data sync?)
+        var gson = PokemonSpecies.INSTANCE.getGson();
+        itemEvos = new ArrayList<>();
+        int size = buf.readInt();
+        itemEvos = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            var species = buf.readResourceLocation();
+            var form = buf.readUtf();
+            var itemEvo = gson.fromJson(buf.readUtf(), ItemInteractionEvolution.class);
+            itemEvos.add(new PokemonItemEvo(species, form, itemEvo));
+        }
     }
 }

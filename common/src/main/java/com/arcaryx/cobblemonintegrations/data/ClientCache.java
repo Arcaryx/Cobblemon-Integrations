@@ -1,5 +1,6 @@
 package com.arcaryx.cobblemonintegrations.data;
 
+import com.arcaryx.cobblemonintegrations.net.messages.SyncEvoItemsMessage;
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
@@ -11,6 +12,7 @@ import java.util.*;
 public class ClientCache {
     private static final Map<Pair<ResourceLocation, String>, List<PokemonDrop>> pokemonDrops = new HashMap<>();
     private static final List<PokemonItemEvo> pokemonItemEvos = new ArrayList<>();
+    private static SyncEvoItemsMessage evoItemsMessage = null;
 
     public static void setPokemonDrops(List<PokemonDrop> drops) {
         pokemonDrops.clear();
@@ -46,7 +48,16 @@ public class ClientCache {
         pokemonItemEvos.addAll(evos);
     }
 
+    public static void setEvoItemsMessage(SyncEvoItemsMessage message) {
+        evoItemsMessage = message;
+    }
+
     public static List<PokemonItemEvo> getPokemonItemEvos() {
+        if (evoItemsMessage != null) {
+            evoItemsMessage.lateDecode();
+            setPokemonItemEvos(evoItemsMessage.itemEvos);
+            evoItemsMessage = null;
+        }
         return pokemonItemEvos;
     }
 }
