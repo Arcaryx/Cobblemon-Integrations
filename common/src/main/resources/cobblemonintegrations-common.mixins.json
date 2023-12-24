@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "cobblemon.MixinInteractWheelGuiFactory",
-    "cobblemon.MixinNbtItemPredicateAdapter",
     "cobblemon.MixinPokemonBattle",
     "cobblemon.MixinPokemonSpawnAction",
     "minecraft.MixinPlayerList"

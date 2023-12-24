@@ -10,11 +10,8 @@ import com.cobblemon.mod.common.api.drop.ItemDropEntry;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.Species;
-import com.cobblemon.mod.common.pokemon.evolution.requirements.BiomeRequirement;
-import com.cobblemon.mod.common.pokemon.evolution.requirements.PokemonPropertiesRequirement;
 import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
 import kotlin.ranges.IntRange;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -90,11 +87,6 @@ public abstract class MixinPlayerList {
             if (!species.getImplemented()) {
                 continue;
             }
-            //for (var evolution : species.getEvolutions()) {
-            //    if (evolution instanceof ItemInteractionEvolution itemEvolution) {
-            //        itemEvos.add(new PokemonItemEvo(species.getResourceIdentifier(), "Normal", itemEvolution));
-            //    }
-            //}
 
             var forms = species.getForms().isEmpty() ? List.of(species.getStandardForm()) : species.getForms();
             for (var form : forms) {
@@ -106,13 +98,6 @@ public abstract class MixinPlayerList {
                                         !CobblemonIntegrations.CONFIG.allowLunarEventVariants()))) {
                             continue;
                         }
-                        //reqs.removeIf(x -> {
-                        //    if (x instanceof BiomeRequirement) {
-                        //        return false;
-                        //    }
-                        //    return true;
-                        //});
-                        reqs.clear();
                         var stripped = new ItemInteractionEvolution(
                             itemEvolution.getId(),
                             itemEvolution.getResult(),
@@ -123,9 +108,7 @@ public abstract class MixinPlayerList {
                             itemEvolution.getLearnableMoves()
                         );
 
-                        //if (itemEvolution.getRequirements().isEmpty()) {
                         itemEvos.add(new PokemonItemEvo(species.getResourceIdentifier(), form.getName(), stripped));
-                        //}
                     }
                 }
             }
