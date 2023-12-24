@@ -28,7 +28,7 @@ abstract class MixinInteractWheelGuiFactory {
     private static void mixinCreatePokemonInteractGui(UUID pokemonID, boolean canMountShoulder, CallbackInfoReturnable<InteractWheelGUI> cir, InteractWheelOption mountShoulder, InteractWheelOption giveItem, Map<Orientation, InteractWheelOption> options, Pair[] arrayOfPair) {
         if (CobblemonIntegrations.CONFIG.isModLoaded("waystones") && CobblemonIntegrations.CONFIG.allowWaystoneTeleport()) {
             var pokemonOpt = CobblemonClient.INSTANCE.getStorage().getMyParty().getSlots().stream()
-                    .filter((x) -> x.getEntity() != null && x.getEntity().getUUID().equals(pokemonID)).findFirst();
+                    .filter((x) -> x != null && x.getEntity() != null && x.getEntity().getUUID().equals(pokemonID)).findFirst();
             if (pokemonOpt.isPresent()) {
                 var pokemon = pokemonOpt.get();
                 if (WaystonesHandler.CanUseTeleport(pokemon)) {
