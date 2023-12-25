@@ -98,9 +98,11 @@ public abstract class MixinPlayerList {
                                         !CobblemonIntegrations.CONFIG.allowLunarEventVariants()))) {
                             continue;
                         }
+                        var result = itemEvolution.getResult();
+                        result.updateAspects();
                         var stripped = new ItemInteractionEvolution(
                             itemEvolution.getId(),
-                            itemEvolution.getResult(),
+                            result,
                             itemEvolution.getRequiredContext(),
                             itemEvolution.getOptional(),
                             itemEvolution.getConsumeHeldItem(),
