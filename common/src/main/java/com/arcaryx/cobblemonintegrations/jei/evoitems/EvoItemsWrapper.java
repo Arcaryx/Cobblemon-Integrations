@@ -1,6 +1,5 @@
 package com.arcaryx.cobblemonintegrations.jei.evoitems;
 
-import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.data.PokemonItemEvo;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.EnhancedCelestialsHandler;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventRequirement;
@@ -10,35 +9,27 @@ import com.cobblemon.mod.common.api.conditional.RegistryLikeTagCondition;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.api.pokemon.evolution.requirement.EvolutionRequirement;
 import com.cobblemon.mod.common.api.pokemon.feature.FlagSpeciesFeature;
-import com.cobblemon.mod.common.api.spawning.TimeRange;
 import com.cobblemon.mod.common.client.gui.PokemonGuiUtilsKt;
 import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonFloatingState;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import com.cobblemon.mod.common.pokemon.evolution.requirements.*;
-import com.cobblemon.mod.common.pokemon.evolution.variants.ItemInteractionEvolution;
 import com.cobblemon.mod.common.util.math.QuaternionUtilsKt;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
 
@@ -94,7 +85,8 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
             }
         }
 
-        var pokemonEvo = new RenderablePokemon(evoSpecies, new HashSet<>(itemEvo.getResult()));
+        evoAspects.addAll(itemEvo.getResult());
+        var pokemonEvo = new RenderablePokemon(evoSpecies, evoAspects);
 
         var m1 = pose.last().pose();
         var l1 = m1.m30();
@@ -175,7 +167,7 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         put(PartyMemberRequirement.class, EvoItemsWrapper::partyMemberRequirement);
         put(PokemonPropertiesRequirement.class, EvoItemsWrapper::pokemonPropertiesRequirement);
         put(RecoilRequirement.class, EvoItemsWrapper::recoilRequirement);
-        put(StructureRequirement.class, EvoItemsWrapper::structureRequirement);
+//        put(StructureRequirement.class, EvoItemsWrapper::structureRequirement);
         put(TimeRangeRequirement.class, EvoItemsWrapper::timeRangeRequirement);
         put(UseMoveRequirement.class, EvoItemsWrapper::useMoveRequirement);
         put(WeatherRequirement.class, EvoItemsWrapper::weatherRequirement);
@@ -304,15 +296,16 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         tooltip.add(Component.literal("%d Recoil Damage".formatted(requirement.getAmount())));
     }
 
-    private static void structureRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
-        var requirement = (StructureRequirement)evoRequirement;
-        var structure = requirement.getStructureCondition();
-        if (structure instanceof RegistryLikeIdentifierCondition<Structure> structureId) {
-            tooltip.add(Component.literal("Near Structure %s".formatted(structureId.getIdentifier())));
-        } else if (structure instanceof RegistryLikeTagCondition<Structure> structureTag) {
-            tooltip.add(Component.literal("Near Structure #%s".formatted(structureTag.getTag().location())));
-        }
-    }
+    // Disabled for 1.4.0 compat
+//    private static void structureRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+//        var requirement = (StructureRequirement)evoRequirement;
+//        var structure = requirement.getStructureCondition();
+//        if (structure instanceof RegistryLikeIdentifierCondition<Structure> structureId) {
+//            tooltip.add(Component.literal("Near Structure %s".formatted(structureId.getIdentifier())));
+//        } else if (structure instanceof RegistryLikeTagCondition<Structure> structureTag) {
+//            tooltip.add(Component.literal("Near Structure #%s".formatted(structureTag.getTag().location())));
+//        }
+//    }
 
     private static void timeRangeRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
         var requirement = (TimeRangeRequirement)evoRequirement;
