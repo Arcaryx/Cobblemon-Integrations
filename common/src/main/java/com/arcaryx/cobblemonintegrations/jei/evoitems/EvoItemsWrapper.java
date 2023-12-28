@@ -2,6 +2,7 @@ package com.arcaryx.cobblemonintegrations.jei.evoitems;
 
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.data.PokemonItemEvo;
+import com.arcaryx.cobblemonintegrations.enhancedcelestials.EnhancedCelestialsHandler;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventRequirement;
 import com.arcaryx.cobblemonintegrations.util.TextUtils;
 import com.cobblemon.mod.common.api.conditional.RegistryLikeIdentifierCondition;
@@ -356,6 +357,6 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
 
     private static void lunarEventRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
         var requirement = (LunarEventRequirement)evoRequirement;
-        tooltip.add(Component.literal("Lunar Event: %s".formatted(requirement.lunarEvent)));
+        tooltip.add(Component.literal("Lunar Event: ").append(EnhancedCelestialsHandler.GetLunarEventName(requirement.lunarEvent, Minecraft.getInstance().level)));
     }
 }

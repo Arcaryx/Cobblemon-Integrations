@@ -6,9 +6,15 @@ import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
 import com.cobblemon.mod.common.pokemon.IVs;
 import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
+import corgitaco.enhancedcelestials.api.EnhancedCelestialsRegistry;
+import corgitaco.enhancedcelestials.api.lunarevent.DefaultLunarEvents;
+import corgitaco.enhancedcelestials.api.lunarevent.LunarEvent;
 import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import kotlin.math.MathKt;
 import kotlin.random.Random;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -76,5 +82,15 @@ public class EnhancedCelestialsHandler {
         EnhancedCelestialsContext enhancedCelestialsContext = ((EnhancedCelestialsWorldData)level).getLunarContext();
         return enhancedCelestialsContext != null && enhancedCelestialsContext.getLunarForecast().getCurrentEventRaw().is(lunarEvent);
     }
+
+    public static Component GetLunarEventName(ResourceLocation eventLocation, Level level) {
+        Registry<LunarEvent> lunarEventRegistry = level.registryAccess().registryOrThrow(EnhancedCelestialsRegistry.LUNAR_EVENT_KEY);
+        var lunarEvent = lunarEventRegistry.get(eventLocation);
+        if (lunarEvent != null) {
+            return lunarEvent.getTextComponents().name().getComponent();
+        }
+        return Component.literal(eventLocation.getPath());
+    }
+
 
 }
