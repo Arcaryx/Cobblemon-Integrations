@@ -1,5 +1,6 @@
 package com.arcaryx.cobblemonintegrations.jei.evoitems;
 
+import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.data.PokemonItemEvo;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventRequirement;
 import com.arcaryx.cobblemonintegrations.util.TextUtils;
@@ -92,7 +93,7 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
             }
         }
 
-        var pokemonEvo = new RenderablePokemon(evoSpecies, evoAspects);
+        var pokemonEvo = new RenderablePokemon(evoSpecies, new HashSet<>(itemEvo.getResult()));
 
         var m1 = pose.last().pose();
         var l1 = m1.m30();
