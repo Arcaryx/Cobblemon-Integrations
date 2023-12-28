@@ -1,3 +1,8 @@
+### 1.0.4 Changes:
+- Fixed Waystones integration bug with empty party slot.
+- Fixed multiplayer disconnect issue.
+- Fixed aspects for item evolutions JEI catalog.
+- Added requirements tooltip for item evolutions JEI catalog.
 ### 1.0.3 Changes:
 - Added check for null species to prevent crashes with incomplete mods like Gravelmon.
 - Lunar event spawns now only spawn with the Enhanced Celestials mod.
