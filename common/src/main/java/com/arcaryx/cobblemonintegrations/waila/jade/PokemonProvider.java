@@ -100,7 +100,7 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
         }
 
         var pokemon = pokemonEntity.getPokemon();
-        pokemon.setAspects(pokemonEntity.getAspects().get());
+        pokemon.setAspects(pokemonEntity.getAspects());
         pokemon.updateForm();
         tooltip.clear();
         var tooltips = CobblemonIntegrations.CONFIG.getPokemonTooltips();

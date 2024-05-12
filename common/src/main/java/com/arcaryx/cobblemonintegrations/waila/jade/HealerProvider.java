@@ -26,7 +26,7 @@ public enum HealerProvider implements IBlockComponentProvider {
         var max = healer.getMaxCharge();
         var percentage = current / max;
         IElementHelper helper = IElementHelper.get();
-        var progressStyle = helper.progressStyle().color(-16777114, -16777046);
+        var progressStyle = helper.progressStyle().color(0xFF000066, 0xFF0000AA);
         var component = Component.literal("Charge: %d%%".formatted(Math.round(percentage * 100))).withStyle(ChatFormatting.GRAY);
 
         //noinspection UnstableApiUsage

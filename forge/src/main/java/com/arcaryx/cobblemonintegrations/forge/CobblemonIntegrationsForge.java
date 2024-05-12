@@ -3,9 +3,11 @@ package com.arcaryx.cobblemonintegrations.forge;
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.forge.enhancedcelestials.ECEventHandler;
 import com.arcaryx.cobblemonintegrations.forge.tan.TaNEventHandler;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -38,5 +40,6 @@ public class CobblemonIntegrationsForge {
         if (ModList.get().isLoaded("enhancedcelestials")) {
             modBus.register(ECEventHandler.class);
         }
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> CobblemonIntegrations::initClient);
     }
 }

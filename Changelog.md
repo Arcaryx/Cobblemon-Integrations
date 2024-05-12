@@ -1,3 +1,6 @@
+### 1.0.5 Changes:
+- Updated to Cobblemon 1.5.
+- Added Jade plugin for Fossil Analyzer.
 ### 1.0.4 Changes:
 - Fixed Waystones integration bug with empty party slot.
 - Fixed multiplayer disconnect issue.

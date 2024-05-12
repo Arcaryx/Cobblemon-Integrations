@@ -16,6 +16,9 @@
     "main": [
       "${mod_base_package}.fabric.CobblemonIntegrationsFabric"
     ],
+    "client": [
+      "${mod_base_package}.fabric.CobblemonIntegrationsFabricClient"
+    ],
     "jade": [
       "${mod_base_package}.waila.jade.CobblemonJadePlugin"
     ],
@@ -32,6 +35,6 @@
     "minecraft": ">=${minecraft_version}",
     "java": ">=17",
     "fabric-api": "*",
-    "cobblemon": ">=1.4"
+    "cobblemon": ">=1.5"
   }
 }

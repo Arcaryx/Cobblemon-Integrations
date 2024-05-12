@@ -4,7 +4,7 @@
   "package": "com.arcaryx.cobblemonintegrations.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "cobblemon.MixinInteractWheelGuiFactory",
+    "cobblemon.MixinFossilAnalyzerInventory",
     "cobblemon.MixinPokemonBattle",
     "cobblemon.MixinPokemonSpawnAction",
     "minecraft.MixinPlayerList"

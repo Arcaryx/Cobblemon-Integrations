@@ -3,7 +3,6 @@ package com.arcaryx.cobblemonintegrations.enhancedcelestials;
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.cobblemon.mod.common.api.spawning.condition.AppendageCondition;
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
-import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +15,7 @@ public class LunarEventCondition implements AppendageCondition {
     }
 
     @Override
-    public boolean fits(@NotNull SpawningContext spawningContext, @NotNull SpawnDetail spawnDetail) {
+    public boolean fits(@NotNull SpawningContext spawningContext) {
         if (lunarEvent == null) {
             return true;
         }
