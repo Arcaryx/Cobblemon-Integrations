@@ -1,3 +1,5 @@
+### 1.0.6 Changes:
+
 ### 1.0.5 Changes:
 - Updated to Cobblemon 1.5.
 - Added Jade plugin for Fossil Analyzer.
