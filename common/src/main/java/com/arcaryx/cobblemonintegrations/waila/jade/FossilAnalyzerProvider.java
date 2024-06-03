@@ -26,8 +26,8 @@ tooltip.add(Component.literal("Structure Incomplete"));
             return;
         }
 
-        if (multiBlock.getCreatedPokemon() != null) {
-            tooltip.add(Component.literal("Completed: " + I18n.get(multiBlock.getCreatedPokemon().getDisplayName().getString())).withStyle(ChatFormatting.GREEN));
+        if (multiBlock.getHasCreatedPokemon() && multiBlock.getResultingFossil() != null) {
+            tooltip.add(Component.literal("Completed: " + I18n.get(multiBlock.getResultingFossil().getResult().create().getDisplayName().getString())).withStyle(ChatFormatting.GREEN));
             return;
         }
 
