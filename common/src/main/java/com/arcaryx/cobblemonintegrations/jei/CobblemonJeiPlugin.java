@@ -72,7 +72,7 @@ public class CobblemonJeiPlugin implements IModPlugin {
             //var baseTexture = PokemonModelRepository.INSTANCE.getTexture(itemEvo.getSpecies(), new HashSet<>(), 0);
             //var isStandardFormBase = itemEvo.getForm().equals(speciesBase.getStandardForm().getName()) || itemEvo.getForm().equals("base");
             //var aspects = new HashSet<String>();
-            //aspects.add(itemEvo.getForm().toLowerCase());
+            //aspects.add(itemEvo.getForm().toLowerCase(Locale.ENGLISH));
             //var formTexture = PokemonModelRepository.INSTANCE.getTexture(itemEvo.getSpecies(), aspects, 0);
             // // Fuck Pikachu, WHY DID THEY DO THIS?
 
