@@ -1,5 +1,8 @@
 ### 1.0.6 Changes:
-
+- Fixed Fossil Analyzer Jade plugin for 1.5.2.
+- Fixed locale issues for non-english users.
+- Fixed UsernameCache issues for newer Jade versions.
+- Added EGG_GROUPS tooltip option (disabled by default).
 ### 1.0.5 Changes:
 - Updated to Cobblemon 1.5.
 - Added Jade plugin for Fossil Analyzer.
