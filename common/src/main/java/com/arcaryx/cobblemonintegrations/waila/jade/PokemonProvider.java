@@ -57,11 +57,7 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
         }
 
         if (configContains(tooltips, TooltipType.TRAINER) && pokemon.getOwnerUUID() != null) {
-            var username = CommonProxy.getLastKnownUsername(pokemon.getOwnerUUID());
-            if (username == null) {
-                username = "???";
-            }
-            data.putString(TAG_TRAINER_NAME, username);
+            data.putUUID(TAG_TRAINER_NAME, pokemon.getOwnerUUID());
         }
 
         if (configContains(tooltips, TooltipType.FRIENDSHIP) && !pokemon.isWild()) {
@@ -172,7 +168,8 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
             }
             case TRAINER -> {
                 if (data.contains(TAG_TRAINER_NAME)) {
-                    tooltip.add(Component.literal("Trainer: ").append(data.getString(TAG_TRAINER_NAME)));
+                    var username = CommonProxy.getLastKnownUsername(data.getUUID(TAG_TRAINER_NAME));
+                    tooltip.add(Component.literal("Trainer: ").append(username == null ? "???" : username));
                 }
             }
             case NICKNAME -> {
