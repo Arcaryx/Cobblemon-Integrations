@@ -6,6 +6,7 @@ import com.arcaryx.cobblemonintegrations.util.ClientUtils;
 import com.arcaryx.cobblemonintegrations.util.PokemonUtils;
 import com.arcaryx.cobblemonintegrations.util.TextUtils;
 import com.arcaryx.cobblemonintegrations.waila.TooltipType;
+import com.cobblemon.mod.common.api.pokemon.egg.EggGroup;
 import com.cobblemon.mod.common.client.settings.ServerSettings;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Gender;
@@ -42,6 +43,8 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
     public static final String TAG_EV_YIELD = "ci_yield";
     public static final String TAG_IVS = "ci_ivs";
     public static final String TAG_EVS = "ci_evs";
+    public static final String TAG_EGG_GROUPS = "ci_egg_groups";
+    public static final String TAG_EGG_GROUP_COUNT = "ci_egg_group_count";
 
     @Override
     public void appendServerData(CompoundTag data, EntityAccessor entityAccessor) {
@@ -86,6 +89,12 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
 
         if (configContains(tooltips, TooltipType.EVS)) {
             data.put(TAG_EVS, pokemon.getEvs().saveToNBT(new CompoundTag()));
+        }
+
+        if (configContains(tooltips, TooltipType.EGG_GROUPS)) {
+            var eggGroups = pokemon.getForm().getEggGroups();
+            data.putInt(TAG_EGG_GROUP_COUNT, eggGroups.size());
+            data.putString(TAG_EGG_GROUPS, String.join(", ", eggGroups.stream().map(EggGroup::getShowdownID$common).toList()));
         }
     }
 
@@ -249,6 +258,15 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
                 if (!pokemonEntity.isOwnedBy(accessor.getPlayer())) {
                     var component = ClientUtils.CreateBattleHint();
                     tooltip.add(component.withStyle(ChatFormatting.DARK_GRAY));
+                }
+            }
+            case EGG_GROUPS -> {
+                var eggGroupCount = data.getInt(TAG_EGG_GROUP_COUNT);
+                var eggGroups = data.getString(TAG_EGG_GROUPS);
+                var eggGroupText = TextUtils.basicPluralize("Egg Group", eggGroupCount) + ": " + eggGroups;
+                var eggGroupLines = TextUtils.wrapString(eggGroupText, 32);
+                for (var line : eggGroupLines) {
+                    tooltip.add(Component.literal(line));
                 }
             }
         }

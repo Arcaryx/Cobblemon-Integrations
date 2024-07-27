@@ -24,7 +24,8 @@ public enum TooltipType {
     EVS,
     DEX_ENTRY,
     SNEAK_HINT,
-    BATTLE_HINT;
+    BATTLE_HINT,
+    EGG_GROUPS;
 
 
     public static boolean check(Object entry) {
