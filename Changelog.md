@@ -1,3 +1,5 @@
+### 1.0.7 Changes:
+
 ### 1.0.6 Changes:
 - Fixed Fossil Analyzer Jade plugin for 1.5.2.
 - Fixed locale issues for non-english users.
