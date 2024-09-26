@@ -1,5 +1,7 @@
 ### 1.0.7 Changes:
-
+- Fixed harvest moon dupe.
+- Fixed UsernameCache for Forge multiplayer.
+- Fixed Fabric Enhanced Celestials on latest versions.
 ### 1.0.6 Changes:
 - Fixed Fossil Analyzer Jade plugin for 1.5.2.
 - Fixed locale issues for non-english users.
