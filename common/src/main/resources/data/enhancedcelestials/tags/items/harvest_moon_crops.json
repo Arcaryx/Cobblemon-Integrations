@@ -1,7 +1,23 @@
 {
   "values": [
     {
-      "id": "#cobblemon:plants",
+      "id": "#cobblemon:apricorns",
+      "required": false
+    },
+    {
+      "id": "#cobblemon:mint_leaf",
+      "required": false
+    },
+    {
+      "id": "#cobblemon:berries",
+      "required": false
+    },
+    {
+      "id": "cobblemon:vivichoke",
+      "required": false
+    },
+    {
+      "id": "cobblemon:pep_up_flower",
       "required": false
     }
   ]
