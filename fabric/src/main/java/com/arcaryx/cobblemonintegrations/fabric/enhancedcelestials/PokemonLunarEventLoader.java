@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 public class PokemonLunarEventLoader {
 
     public static void init() {
-        PokemonLunarEvent.KEY = ResourceKey.createRegistryKey(new ResourceLocation(CobblemonIntegrations.MOD_ID,  CobblemonIntegrations.MOD_ID + "/" + EnhancedCelestials.MOD_ID));
+        PokemonLunarEvent.KEY = ResourceKey.createRegistryKey(new ResourceLocation(CobblemonIntegrations.MOD_ID + "/" + EnhancedCelestials.MOD_ID));
         DynamicRegistries.registerSynced(PokemonLunarEvent.KEY, PokemonLunarEvent.CODEC);
     }
 }

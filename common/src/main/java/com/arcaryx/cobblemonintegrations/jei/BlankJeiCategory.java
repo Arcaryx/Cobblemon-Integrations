@@ -1,5 +1,6 @@
 package com.arcaryx.cobblemonintegrations.jei;
 
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.category.IRecipeCategory;
@@ -41,8 +42,7 @@ public abstract class BlankJeiCategory<T extends IRecipeCategoryExtension> imple
     }
 
     @Override
-    public @NotNull List<Component> getTooltipStrings(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        return recipe.getTooltipStrings(mouseX, mouseY);
+    public void getTooltip(ITooltipBuilder tooltip, T recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        recipe.getTooltip(tooltip, mouseX, mouseY);
     }
-
 }

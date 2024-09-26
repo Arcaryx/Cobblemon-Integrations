@@ -38,7 +38,7 @@ public class DropsJeiCategory extends BlankJeiCategory<DropsWrapper> {
                 if (slotNumber < dropCount) {
                      builder.addSlot(RecipeIngredientRole.OUTPUT, 66 + xOffset, 13 + yOffset)
                         .setSlotName(String.valueOf(slotNumber))
-                        .addTooltipCallback(wrapper)
+                        .addRichTooltipCallback(wrapper)
                         .addItemStack(BuiltInRegistries.ITEM.get(drops.get(slotNumber).getItem()).getDefaultInstance());
                 }
                 yOffset += 80 / 4;

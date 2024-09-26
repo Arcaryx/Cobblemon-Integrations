@@ -31,7 +31,7 @@ public class EvoItemsJeiCategory extends BlankJeiCategory<EvoItemsWrapper> {
         var items = wrapper.getValidItems();
         builder.addSlot(RecipeIngredientRole.INPUT, 68, 49)
                 .setSlotName("evo_item")
-                .addTooltipCallback(wrapper)
+                .addRichTooltipCallback(wrapper)
                 .addItemStacks(items.stream().map(Item::getDefaultInstance).toList());
     }
 }

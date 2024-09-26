@@ -8,7 +8,8 @@ import com.cobblemon.mod.common.pokemon.FormData;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.util.math.QuaternionUtilsKt;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
@@ -23,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotRichTooltipCallback {
     private final Species species;
     private final FormData form;
     private PokemonFloatingState state;
@@ -88,9 +89,8 @@ public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
         pose.popPose();
     }
 
-
     @Override
-    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+    public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
         var drop = getDrops().get(Integer.parseInt(recipeSlotView.getSlotName().orElse("0")));
         var component = Component.literal(String.valueOf(drop.getRange().getFirst()));
         var chance = drop.getChance() * 100;
@@ -99,6 +99,6 @@ public class DropsWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
             component.append("-" + drop.getRange().getLast());
         }
         component.append((drop.getChance() < 1F ? " (" + chanceString + "%)" : ""));
-        tooltip.add(component);
+        tooltipBuilder.add(component);
     }
 }

@@ -14,7 +14,8 @@ import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonF
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import com.cobblemon.mod.common.pokemon.evolution.requirements.*;
 import com.cobblemon.mod.common.util.math.QuaternionUtilsKt;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
@@ -31,7 +32,7 @@ import org.joml.Vector3f;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotRichTooltipCallback {
 
     private final PokemonItemEvo itemEvo;
 
@@ -130,25 +131,8 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         pose.popPose();
     }
 
-    @Override
-    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
-        if (itemEvo.getItemEvo().getRequirements().isEmpty()) {
-            tooltip.add(Component.literal("No additional requirements."));
-            return;
-        }
-        tooltip.add(Component.literal(TextUtils.basicPluralize("Requirement", itemEvo.getItemEvo().getRequirements().size()) + ":"));
-        for (var requirement : itemEvo.getItemEvo().getRequirements()) {
-            var handler = reqHandlers.get(requirement.getClass());
-            if (handler != null) {
-                handler.accept(requirement, tooltip);
-            } else {
-                tooltip.add(Component.literal("Unknown: %s".formatted(requirement.getClass().getSimpleName())));
-            }
-        }
-    }
-
     // TODO: I could move these to a different file at least :P
-    private Map<Class<? extends EvolutionRequirement>, BiConsumer<EvolutionRequirement, List<Component>>> reqHandlers = new HashMap<>() {{
+    private Map<Class<? extends EvolutionRequirement>, BiConsumer<EvolutionRequirement, ITooltipBuilder>> reqHandlers = new HashMap<>() {{
         // Cobblemon
         put(AnyRequirement.class, EvoItemsWrapper::anyRequirement);
         put(AreaRequirement.class, EvoItemsWrapper::areaRequirement);
@@ -178,17 +162,17 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
 
     }};
 
-    private static void anyRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void anyRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (AnyRequirement)evoRequirement;
         tooltip.add(Component.literal("(Any)"));
     }
 
-    private static void areaRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void areaRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (AreaRequirement)evoRequirement;
         tooltip.add(Component.literal("Within %s".formatted(requirement.getBox().toString())));
     }
 
-    private static void attackDefenceRatioRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void attackDefenceRatioRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (AttackDefenceRatioRequirement)evoRequirement;
         switch (requirement.getRatio()) {
             case ATTACK_HIGHER -> tooltip.add(Component.literal("Attack > Defence"));
@@ -197,12 +181,12 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         }
     }
 
-    private static void battleCriticalHitsRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void battleCriticalHitsRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (BattleCriticalHitsRequirement)evoRequirement;
         tooltip.add(Component.literal("%d Critical Hits".formatted(requirement.getAmount())));
     }
 
-    private static void biomeRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void biomeRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (BiomeRequirement)evoRequirement;
         if (requirement.getBiomeCondition() != null) {
             if (requirement.getBiomeCondition() instanceof RegistryLikeIdentifierCondition<Biome> biomeId) {
@@ -220,27 +204,27 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         }
     }
 
-    private static void blocksTraveledRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void blocksTraveledRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (BlocksTraveledRequirement)evoRequirement;
         tooltip.add(Component.literal("%d Blocks Traveled".formatted(requirement.getAmount())));
     }
 
-    private static void damageTakenRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void damageTakenRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (DamageTakenRequirement)evoRequirement;
         tooltip.add(Component.literal("%d Damage Taken".formatted(requirement.getAmount())));
     }
 
-    private static void defeatRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void defeatRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (DefeatRequirement)evoRequirement;
         tooltip.add(Component.literal("%d %s".formatted(requirement.getAmount(), TextUtils.basicPluralize("Defeat", requirement.getAmount()))));
     }
 
-    private static void friendshipRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void friendshipRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (FriendshipRequirement)evoRequirement;
         tooltip.add(Component.literal("%d Friendship".formatted(requirement.getAmount())));
     }
 
-    private static void heldItemRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void heldItemRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (HeldItemRequirement)evoRequirement;
         var item = requirement.getItemCondition().getItem();
         if (item instanceof RegistryLikeIdentifierCondition<Item> itemId) {
@@ -250,13 +234,13 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         }
     }
 
-    private static void levelRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void levelRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (LevelRequirement)evoRequirement;
         tooltip.add(Component.literal("%sLevel%s".formatted(requirement.getMinLevel() == 1 ? "" : "%d ≤ ".formatted(requirement.getMaxLevel()),
                 requirement.getMaxLevel() == Integer.MAX_VALUE ? "" : " ≤ %d".formatted(requirement.getMaxLevel()))));
     }
 
-    private static void moonPhaseRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void moonPhaseRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (MoonPhaseRequirement)evoRequirement;
         switch (requirement.getMoonPhase()) {
             // TODO: I can't wait to do a translation/cleanup pass and clean this up :deceased:
@@ -271,33 +255,33 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         }
     }
 
-    private static void moveSetRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void moveSetRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (MoveSetRequirement)evoRequirement;
         tooltip.add(Component.literal("Move: ").append(requirement.getMove().getDisplayName()));
     }
 
-    private static void moveTypeRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void moveTypeRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (MoveTypeRequirement)evoRequirement;
         tooltip.add(Component.literal("Move Type: ").append(requirement.getType().getDisplayName()));
     }
 
-    private static void partyMemberRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void partyMemberRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (PartyMemberRequirement)evoRequirement;
         tooltip.add(Component.literal("Party Member: ").append(requirement.getTarget().asString(", ")));
     }
 
-    private static void pokemonPropertiesRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void pokemonPropertiesRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (PokemonPropertiesRequirement)evoRequirement;
         tooltip.add(Component.literal("Properties: ").append(requirement.getTarget().asString(", ")));
     }
 
-    private static void recoilRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void recoilRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (RecoilRequirement)evoRequirement;
         tooltip.add(Component.literal("%d Recoil Damage".formatted(requirement.getAmount())));
     }
 
     // Disabled for 1.4.0 compat
-//    private static void structureRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+//    private static void structureRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
 //        var requirement = (StructureRequirement)evoRequirement;
 //        var structure = requirement.getStructureCondition();
 //        if (structure instanceof RegistryLikeIdentifierCondition<Structure> structureId) {
@@ -307,7 +291,7 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
 //        }
 //    }
 
-    private static void timeRangeRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void timeRangeRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (TimeRangeRequirement)evoRequirement;
         tooltip.add(Component.literal("Specific Time Range")); // TODO: Some way of formatting these time ranges
         //if (TimeRange.Companion.getTimeRanges().containsValue(requirement.getRange())) {
@@ -322,13 +306,13 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         //}
     }
 
-    private static void useMoveRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void useMoveRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (UseMoveRequirement)evoRequirement;
         tooltip.add(Component.literal("Use ").append(requirement.getMove().getDisplayName())
                 .append(" %d %s".formatted(requirement.getAmount(), TextUtils.basicPluralize("time", requirement.getAmount()))));
     }
 
-    private static void weatherRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void weatherRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (WeatherRequirement)evoRequirement;
         // TODO: Probably a way of displaying "Sunny" as opposed to "Not Raining, Not Thundering"
         if (Boolean.TRUE.equals(requirement.isRaining())) {
@@ -343,13 +327,30 @@ public class EvoItemsWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         }
     }
 
-    private static void worldRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void worldRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (WorldRequirement)evoRequirement;
         tooltip.add(Component.literal("Dimension: %s".formatted(requirement.getIdentifier())));
     }
 
-    private static void lunarEventRequirement(EvolutionRequirement evoRequirement, List<Component> tooltip) {
+    private static void lunarEventRequirement(EvolutionRequirement evoRequirement, ITooltipBuilder tooltip) {
         var requirement = (LunarEventRequirement)evoRequirement;
         tooltip.add(Component.literal("Lunar Event: ").append(EnhancedCelestialsHandler.GetLunarEventName(requirement.lunarEvent, Minecraft.getInstance().level)));
+    }
+
+    @Override
+    public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltipBuilder) {
+        if (itemEvo.getItemEvo().getRequirements().isEmpty()) {
+            tooltipBuilder.add(Component.literal("No additional requirements."));
+            return;
+        }
+        tooltipBuilder.add(Component.literal(TextUtils.basicPluralize("Requirement", itemEvo.getItemEvo().getRequirements().size()) + ":"));
+        for (var requirement : itemEvo.getItemEvo().getRequirements()) {
+            var handler = reqHandlers.get(requirement.getClass());
+            if (handler != null) {
+                handler.accept(requirement, tooltipBuilder);
+            } else {
+                tooltipBuilder.add(Component.literal("Unknown: %s".formatted(requirement.getClass().getSimpleName())));
+            }
+        }
     }
 }

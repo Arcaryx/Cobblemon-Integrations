@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FossilAnalyzerBlockEntity.FossilAnalyzerInventory.class)
 abstract class MixinFossilAnalyzerInventory {
-    @Inject(method = "getContainerSize", at = @At("HEAD"), cancellable = true)
-    private void fixGetContainerSize(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(1);
-    }
+//    @Inject(method = "getContainerSize", at = @At("HEAD"), cancellable = true)
+//    private void fixGetContainerSize(CallbackInfoReturnable<Integer> cir) {
+//        cir.setReturnValue(1);
+//    }
 
 }
