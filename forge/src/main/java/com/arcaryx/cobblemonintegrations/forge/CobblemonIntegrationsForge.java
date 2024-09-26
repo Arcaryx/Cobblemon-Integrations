@@ -3,6 +3,7 @@ package com.arcaryx.cobblemonintegrations.forge;
 import com.arcaryx.cobblemonintegrations.CobblemonIntegrations;
 import com.arcaryx.cobblemonintegrations.forge.enhancedcelestials.ECEventHandler;
 import com.arcaryx.cobblemonintegrations.forge.tan.TaNEventHandler;
+import com.arcaryx.cobblemonintegrations.forge.waila.jade.JadeForgeUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,6 +40,9 @@ public class CobblemonIntegrationsForge {
         }
         if (ModList.get().isLoaded("enhancedcelestials")) {
             modBus.register(ECEventHandler.class);
+        }
+        if (ModList.get().isLoaded("jade")) {
+            CobblemonIntegrations.JADE_UTIL = new JadeForgeUtil();
         }
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> CobblemonIntegrations::initClient);
     }

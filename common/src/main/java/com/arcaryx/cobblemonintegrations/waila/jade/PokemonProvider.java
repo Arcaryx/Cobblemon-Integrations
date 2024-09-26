@@ -34,6 +34,7 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
     INSTANCE;
 
     public static final String TAG_GENDER = "ci_gender";
+    public static final String TAG_TRAINER_UUID = "ci_trainer_uuid";
     public static final String TAG_TRAINER_NAME = "ci_trainer_name";
     public static final String TAG_NATURE_NAME = "ci_nature_name";
     public static final String TAG_MINTED_NATURE_NAME = "ci_minted_nature_name";
@@ -60,7 +61,8 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
         }
 
         if (configContains(tooltips, TooltipType.TRAINER) && pokemon.getOwnerUUID() != null) {
-            data.putUUID(TAG_TRAINER_NAME, pokemon.getOwnerUUID());
+            data.putUUID(TAG_TRAINER_UUID, pokemon.getOwnerUUID());
+            data.putString(TAG_TRAINER_NAME, CobblemonIntegrations.JADE_UTIL.getPlayerUsernameServer(pokemon.getOwnerUUID()));
         }
 
         if (configContains(tooltips, TooltipType.FRIENDSHIP) && !pokemon.isWild()) {
@@ -177,7 +179,10 @@ public enum PokemonProvider implements IEntityComponentProvider, IServerDataProv
             }
             case TRAINER -> {
                 if (data.contains(TAG_TRAINER_NAME)) {
-                    var username = CommonProxy.getLastKnownUsername(data.getUUID(TAG_TRAINER_NAME));
+                    var username = data.getString(TAG_TRAINER_NAME);
+                    if (username.isEmpty()) {
+                        username = CobblemonIntegrations.JADE_UTIL.getPlayerUsernameClient(data.getUUID(TAG_TRAINER_UUID));
+                    }
                     tooltip.add(Component.literal("Trainer: ").append(username == null ? "???" : username));
                 }
             }

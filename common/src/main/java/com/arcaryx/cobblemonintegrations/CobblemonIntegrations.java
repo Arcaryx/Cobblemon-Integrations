@@ -4,6 +4,7 @@ import com.arcaryx.cobblemonintegrations.config.IConfig;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventCondition;
 import com.arcaryx.cobblemonintegrations.enhancedcelestials.LunarEventRequirement;
 import com.arcaryx.cobblemonintegrations.net.AbstractNetworkHandler;
+import com.arcaryx.cobblemonintegrations.waila.jade.IJadeUtil;
 import com.arcaryx.cobblemonintegrations.waystones.InteractionGuiHandler;
 import com.cobblemon.mod.common.pokemon.evolution.adapters.CobblemonRequirementAdapter;
 import kotlin.jvm.internal.Reflection;
@@ -16,6 +17,7 @@ public class CobblemonIntegrations
 	public static IConfig CONFIG;
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static AbstractNetworkHandler NETWORK;
+	public static IJadeUtil JADE_UTIL;
 
 	public static void init() {
 		NETWORK.registerMessagesServer();
