@@ -15,11 +15,9 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import toughasnails.api.item.TANItems;
 import toughasnails.api.thirst.WaterType;
 import toughasnails.item.EmptyCanteenItem;
-import toughasnails.item.FilledCanteenItem;
 
 import java.util.Objects;
 
@@ -53,8 +51,8 @@ public class TaNEventHandler {
             if (CobblemonIntegrationsForge.CONFIG.fillBottle.get() && water != null && itemstack.is(Items.GLASS_BOTTLE)) {
                 player.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
                 ItemStack filledStack = switch (water) {
-                    case PURIFIED -> new ItemStack(TANItems.PURIFIED_WATER_BOTTLE.get());
-                    case DIRTY -> new ItemStack(TANItems.DIRTY_WATER_BOTTLE.get());
+                    case PURIFIED -> new ItemStack(TANItems.PURIFIED_WATER_BOTTLE);
+                    case DIRTY -> new ItemStack(TANItems.DIRTY_WATER_BOTTLE);
                     default -> PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
                 };
                 fillItem(event, player, itemstack, filledStack);
@@ -62,12 +60,12 @@ public class TaNEventHandler {
             }
 
             if (CobblemonIntegrationsForge.CONFIG.fillCanteen.get() && water != null &&
-                    (itemstack.getItem() instanceof EmptyCanteenItem || itemstack.getItem() instanceof FilledCanteenItem)) {
+                    itemstack.getItem() instanceof EmptyCanteenItem canteen) {
                 player.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
                 ItemStack filledStack = switch (water) {
-                    case PURIFIED -> new ItemStack(TANItems.PURIFIED_WATER_CANTEEN.get());
-                    case DIRTY -> new ItemStack(TANItems.DIRTY_WATER_CANTEEN.get());
-                    default -> PotionUtils.setPotion(new ItemStack(TANItems.WATER_CANTEEN.get()), Potions.WATER);
+                    case PURIFIED -> new ItemStack(canteen.getPurifiedWaterCanteen());
+                    case DIRTY -> new ItemStack(canteen.getDirtyWaterCanteen());
+                    default -> PotionUtils.setPotion(new ItemStack(canteen.getWaterCanteen()), Potions.WATER);
                 };
                 fillItem(event, player, itemstack, filledStack);
             }
